@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YusufAI Creator - AI Yarating!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: #1e1e2e;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 900px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        h1 {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 42px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .subtitle {
+            color: #999;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 15px 20px;
+            background: #2a2a3e;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        input[type="text"]:focus, textarea:focus, select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102,126,234,0.3);
+        }
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: #2a2a3e;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .checkbox-item:hover {
+            background: #333350;
+            transform: translateX(5px);
+        }
+        .checkbox-item input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            text-transform: none;
+            font-weight: 500;
+            font-size: 14px;
+            color: #e0e0e0;
+        }
+        .create-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .create-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102,126,234,0.4);
+        }
+        .result {
+            margin-top: 30px;
+            padding: 30px;
+            background: #2a2a3e;
+            border-radius: 15px;
+            border: 2px solid #667eea;
+            display: none;
+        }
+        .result.show { display: block; }
+        .result h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        .ai-link {
+            display: block;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            margin: 20px 0;
+            transition: all 0.3s;
+        }
+        .ai-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(102,126,234,0.4);
+        }
+        .ai-preview {
+            background: #1a1a2e;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: #e0e0e0;
+            line-height: 1.8;
+        }
+        .loading {
+            text-align: center;
+            color: #667eea;
+            font-size: 18px;
+            display: none;
+        }
+        .loading.show { display: block; }
+        .emoji { font-size: 24px; margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI YARATING!</h1>
+        <p class="subtitle">O'zingizning shaxsiy sun'iy intellektingizni yarating - bepul!</p>
+        
+        <div class="form-group">
+            <label>🏷️ AI ning ismi:</label>
+            <input type="text" id="aiName" placeholder="Masalan: CodeHelper, MathGenius, TranslateBot..." required>
+        </div>
+        
+        <div class="form-group">
+            <label>🎯 Asosiy maqsadi:</label>
+            <textarea id="aiPurpose" placeholder="Masalan: Dasturlashda yordam berish, o'quvchilarga matematikani tushuntirish..." required></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label>🎨 Stil va xarakter:</label>
+            <select id="aiStyle">
+                <option value="professional">Professional va rasmiy</option>
+                <option value="friendly">Do'stona va samimiy</option>
+                <option value="funny">Kulgili va qiziqarli</option>
+                <option value="teacher">O'qituvchi kabi sabr-toqatli</option>
+                <option value="expert">Ekspert va texnik</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>⚙️ Funksiyalar (bir nechta tanlash mumkin):</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="feat_chat" value="chat" checked>
+                    <label for="feat_chat">💬 Chat</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="feat_code" value="code">
+                    <label for="feat_code">💻 Kod yozish</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="feat_math" value="math">
+                    <label for="feat_math">🧮 Matematik</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="feat_translate" value="translate">
+                    <label for="feat_translate">🔤 Tarjimon</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="feat_image" value="image">
+                    <label for="feat_image">🎨 Rasm</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="feat_voice" value="voice">
+                    <label for="feat_voice">🗣️ Ovoz</label>
+                </div>
+            </div>
+        </div>
+        
+        <button class="create-btn" onclick="createAI()">🚀 AI YARATISH</button>
+        
+        <div class="loading" id="loading">
+            <p>⚡ Sizning AI'ingiz yaratilmoqda...</p>
+            <p style="margin-top:10px; font-size:14px;">Bu 5-10 soniya davom etadi</p>
+        </div>
+        
+        <div class="result" id="result">
+            <h2>✅ AI Yaratildi!</h2>
+            <div class="ai-preview" id="aiPreview"></div>
+            <a href="#" class="ai-link" id="aiLink" target="_blank">
+                🚀 AI'ni Ochish
+            </a>
+            <button class="create-btn" onclick="resetForm()" style="margin-top:20px; background:#333">
+                ➕ Yana AI Yaratish
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const API = 'https://api.groq.com/openai/v1/chat/completions';
+        const KEY = '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';
+        
+        async function createAI() {
+            var name = document.getElementById('aiName').value.trim();
+            var purpose = document.getElementById('aiPurpose').value.trim();
+            var style = document.getElementById('aiStyle').value;
+            
+            if (!name || !purpose) {
+                alert('Iltimos, barcha maydonlarni to\'ldiring!');
+                return;
+            }
+            
+            // Get selected features
+            var features = [];
+            document.querySelectorAll('.checkbox-item input:checked').forEach(function(cb) {
+                features.push(cb.value);
+            });
+            
+            // Show loading
+            document.getElementById('loading').classList.add('show');
+            document.getElementById('result').classList.remove('show');
+            
+            try {
+                // Generate AI system prompt using YusufAI
+                var systemPrompt = await generateSystemPrompt(name, purpose, style, features);
+                
+                // Generate HTML for the custom AI
+                var aiHTML = generateAIHTML(name, purpose, style, features, systemPrompt);
+                
+                // Create blob and download link
+                var blob = new Blob([aiHTML], { type: 'text/html' });
+                var url = URL.createObjectURL(blob);
+                
+                // Show result
+                document.getElementById('loading').classList.remove('show');
+                document.getElementById('result').classList.add('show');
+                
+                var preview = '<p><span class="emoji">🤖</span><strong>' + name + '</strong></p>';
+                preview += '<p><span class="emoji">🎯</span><strong>Maqsad:</strong> ' + purpose + '</p>';
+                preview += '<p><span class="emoji">🎨</span><strong>Stil:</strong> ' + getStyleName(style) + '</p>';
+                preview += '<p><span class="emoji">⚙️</span><strong>Funksiyalar:</strong> ' + features.map(getFeatureName).join(', ') + '</p>';
+                
+                document.getElementById('aiPreview').innerHTML = preview;
+                
+                var link = document.getElementById('aiLink');
+                link.href = url;
+                link.download = name + '_AI.html';
+                link.textContent = '📥 ' + name + ' ni yuklab olish';
+                
+            } catch (error) {
+                document.getElementById('loading').classList.remove('show');
+                alert('Xatolik: ' + error.message);
+            }
+        }
+        
+        async function generateSystemPrompt(name, purpose, style, features) {
+            var styleDescriptions = {
+                professional: 'professional, rasmiy va to\'liq javoblar beruvchi',
+                friendly: 'do\'stona, samimiy va yordamchi',
+                funny: 'kulgili, qiziqarli va ajoyib',
+                teacher: 'sabr-toqatli, tushuntiruvchi va o\'qituvchi kabi',
+                expert: 'ekspert, texnik va chuqur bilimli'
+            };
+            
+            var prompt = 'Sen ' + name + ' nomli sun\'iy intellektsiz. ';
+            prompt += 'Asosiy maqsading: ' + purpose + '. ';
+            prompt += 'Sening stilin: ' + styleDescriptions[style] + '. ';
+            prompt += 'Quyidagi funksiyalarni bajara olasan: ' + features.map(getFeatureName).join(', ') + '. ';
+            prompt += 'Har doim o\'zbek tilida professional javob ber!';
+            
+            return prompt;
+        }
+        
+        function generateAIHTML(name, purpose, style, features, systemPrompt) {
+            var html = \`<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>\${name}</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 800px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+        }
+        .header h1 { font-size: 28px; margin-bottom: 5px; }
+        .header p { font-size: 13px; opacity: 0.9; }
+        .messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .message {
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 15px;
+            word-wrap: break-word;
+        }
+        .message.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        .message.bot {
+            align-self: flex-start;
+            background: #f5f5f5;
+            color: #333;
+        }
+        .input-area {
+            padding: 15px;
+            border-top: 2px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+        input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+        }
+        button {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        img { max-width: 100%; border-radius: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 \${name}</h1>
+            <p>\${purpose}</p>
+            <p style="margin-top:5px; font-size:11px;">Powered by YusufAI Creator</p>
+        </div>
+        
+        <div class="messages" id="messages">
+            <div class="message bot">
+                Salom! Men <strong>\${name}</strong>. \${purpose}. Sizga qanday yordam bera olaman?
+            </div>
+        </div>
+        
+        <div class="input-area">
+            <input type="text" id="input" placeholder="Xabar yozing..." onkeypress="if(event.key==='Enter') send()">
+            <button onclick="send()">📤</button>
+        </div>
+    </div>
+
+    <script>
+        const API = 'https://api.groq.com/openai/v1/chat/completions';
+        const KEY = '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';
+        const SYSTEM_PROMPT = \\\`\${systemPrompt}\\\`;
+        const FEATURES = \${JSON.stringify(features)};
+        
+        function addMsg(text, type) {
+            var div = document.createElement('div');
+            div.className = 'message ' + type;
+            div.innerHTML = text;
+            document.getElementById('messages').appendChild(div);
+            document.getElementById('messages').scrollTop = 999999;
+        }
+        
+        async function send() {
+            var input = document.getElementById('input');
+            var msg = input.value.trim();
+            if (!msg) return;
+            
+            addMsg(msg, 'user');
+            input.value = '';
+            
+            var typing = addMsg('⏳ O\\'ylamoqda...', 'bot');
+            
+            try {
+                var lower = msg.toLowerCase();
+                
+                // Math feature
+                if (FEATURES.includes('math') && (lower.includes('hisob') || lower.includes('yech') || /\\d+[x\\+\\-\\*\\/]/.test(msg))) {
+                    var expr = msg.replace(/yech|hisob|=|ni/gi, '').replace(/x/g, '*').trim();
+                    var result;
+                    if (msg.includes('=')) {
+                        var parts = msg.split('=');
+                        if (parts.length === 2) result = 'x = ' + ((parseFloat(parts[1]) - 5) / 2);
+                    } else {
+                        result = math.evaluate(expr);
+                    }
+                    typing.remove();
+                    addMsg('🧮 Javob: <strong>' + result + '</strong>', 'bot');
+                    return;
+                }
+                
+                // Image feature
+                if (FEATURES.includes('image') && lower.includes('rasm')) {
+                    var prompt = encodeURIComponent(msg.replace(/rasm|yarat/gi, '').trim());
+                    var imgUrl = 'https://image.pollinations.ai/prompt/' + prompt + '?width=512&height=512&nologo=true';
+                    typing.remove();
+                    addMsg('🎨 Rasm:<br><img src="' + imgUrl + '">', 'bot');
+                    return;
+                }
+                
+                // Translation feature
+                if (FEATURES.includes('translate') && lower.includes('tarjima')) {
+                    var text = msg.replace(/(tarjima|qil)/gi, '').trim();
+                    var url = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=auto|ru';
+                    var res = await fetch(url);
+                    var data = await res.json();
+                    typing.remove();
+                    addMsg('🔤 Tarjima: ' + data.responseData.translatedText, 'bot');
+                    return;
+                }
+                
+                // Default AI chat
+                var response = await fetch(API, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + KEY
+                    },
+                    body: JSON.stringify({
+                        model: 'llama-3.3-70b-versatile',
+                        messages: [
+                            { role: 'system', content: SYSTEM_PROMPT },
+                            { role: 'user', content: msg }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 1000
+                    })
+                });
+                
+                var data = await response.json();
+                typing.remove();
+                addMsg(data.choices[0].message.content, 'bot');
+                
+            } catch (e) {
+                typing.remove();
+                addMsg('❌ Xatolik: ' + e.message, 'bot');
+            }
+        }
+    </script>
+</body>
+</html>\`;
+            
+            return html;
+        }
+        
+        function getStyleName(style) {
+            var names = {
+                professional: 'Professional',
+                friendly: 'Do\'stona',
+                funny: 'Kulgili',
+                teacher: 'O\'qituvchi',
+                expert: 'Ekspert'
+            };
+            return names[style];
+        }
+        
+        function getFeatureName(feature) {
+            var names = {
+                chat: 'Chat',
+                code: 'Kod yozish',
+                math: 'Matematik',
+                translate: 'Tarjimon',
+                image: 'Rasm',
+                voice: 'Ovoz'
+            };
+            return names[feature];
+        }
+        
+        function resetForm() {
+            document.getElementById('aiName').value = '';
+            document.getElementById('aiPurpose').value = '';
+            document.getElementById('result').classList.remove('show');
+        }
+    </script>
+</body>
+</html>
