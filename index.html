@@ -3,745 +3,542 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="YusufAI - Cheksiz imkoniyatlar AI platformasi va API">
-    <meta name="theme-color" content="#667eea">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>YusufAI - Cheksiz Imkoniyatlar</title>
+    <title>YusufAI - Cheksiz Imkoniyatlar | O'zbek AI Platformasi</title>
+    <meta name="description" content="YusufAI - Muhammad Yusuf (13) tomonidan yaratilgan sun'iy intellekt platformasi. ChatXMY, Image Generator, Translator va boshqa AI xizmatlari.">
+    <meta name="keywords" content="YusufAI, ChatXMY, O'zbek AI, Uzbekistan AI, Muhammad Yusuf, Sun'iy Intellekt">
+    <meta name="author" content="Muhammad Yusuf">
     
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23667eea'/><stop offset='1' stop-color='%23764ba2'/></linearGradient></defs><circle cx='100' cy='100' r='90' fill='url(%23g)'/><circle cx='70' cy='70' r='12' fill='%2300D4AA'/><circle cx='130' cy='70' r='12' fill='%23CC785C'/><circle cx='70' cy='130' r='12' fill='%234285F4'/><circle cx='130' cy='130' r='12' fill='%230668E1'/><circle cx='100' cy='100' r='30' fill='white'/><text x='100' y='110' font-size='24' font-weight='bold' text-anchor='middle' fill='%23667eea'>AI</text></svg>">
+    <!-- Open Graph -->
+    <meta property="og:title" content="YusufAI - Cheksiz Imkoniyatlar">
+    <meta property="og:description" content="O'zbekistonning birinchi yosh dasturchi tomonidan yaratilgan AI platformasi">
+    <meta property="og:type" content="website">
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --text: #2c3e50;
+            --glow: rgba(102, 126, 234, 0.5);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            min-height: 100vh;
-            color: white;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #16213e 100%);
+            color: var(--light);
+            overflow-x: hidden;
         }
         
-        /* Navigation */
-        .nav {
+        /* Animated Background */
+        .bg-animation {
             position: fixed;
+            width: 100%;
+            height: 100%;
             top: 0;
             left: 0;
-            right: 0;
-            background: rgba(30, 30, 46, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            z-index: 0;
+            opacity: 0.1;
         }
         
-        .nav-logo {
-            font-size: 24px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .bg-animation canvas {
+            display: block;
         }
         
-        .nav-links {
-            display: flex;
-            gap: 25px;
-        }
-        
-        .nav-link {
-            color: #a0a0a0;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            transition: color 0.3s;
-            cursor: pointer;
-        }
-        
-        .nav-link:hover, .nav-link.active {
-            color: #667eea;
-        }
-        
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-        }
-        
-        /* Sections */
-        .section {
-            min-height: 100vh;
-            padding: 100px 20px 50px;
-            display: none;
-        }
-        
-        .section.active { display: block; }
-        
-        /* Hero Logo */
-        .hero-logo {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 30px;
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        /* Hero */
+        /* Hero Section */
         .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            max-width: 900px;
-            margin: 0 auto;
+            padding: 2rem;
+            z-index: 1;
         }
         
-        .title {
-            font-size: 64px;
+        .hero-content {
+            max-width: 900px;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 900;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
+            background-clip: text;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 40px var(--glow);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                filter: drop-shadow(0 0 20px var(--glow));
+            }
+            to {
+                filter: drop-shadow(0 0 40px var(--primary));
+            }
         }
         
         .tagline {
-            font-size: 24px;
-            color: #a0a0a0;
-            margin-bottom: 15px;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            color: var(--accent);
+            letter-spacing: 2px;
         }
         
-        .subtitle {
-            font-size: 16px;
-            color: #808080;
-            margin-bottom: 40px;
-            line-height: 1.8;
+        .creator-info {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
         }
         
-        .ai-logos {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 30px 0;
-            flex-wrap: wrap;
+        .creator-info strong {
+            color: var(--accent);
+            font-weight: 600;
         }
         
-        .ai-logo-item {
-            padding: 12px 20px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-        }
-        
-        .cta-btn {
-            padding: 18px 45px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            border: none;
+            text-decoration: none;
             border-radius: 50px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-            transition: all 0.3s;
-            margin: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
         }
         
-        .cta-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        .cta-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
         }
         
-        .cta-btn.secondary {
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.3);
+        .cta-button:hover:before {
+            left: 100%;
         }
         
-        /* Features Grid */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 50px auto;
-        }
-        
-        .feature {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            transition: all 0.3s;
-        }
-        
-        .feature:hover {
+        .cta-button:hover {
             transform: translateY(-5px);
-            background: rgba(255,255,255,0.08);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
         }
         
-        .feature-icon { font-size: 40px; margin-bottom: 15px; }
-        .feature-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
-        .feature-desc { color: #a0a0a0; font-size: 14px; }
-        
-        /* API Section */
-        .api-container {
-            max-width: 1000px;
-            margin: 0 auto;
+        /* AI Products Section */
+        .ai-products {
+            position: relative;
+            padding: 5rem 2rem;
+            z-index: 1;
         }
         
         .section-title {
-            font-size: 48px;
-            font-weight: 900;
             text-align: center;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
-        .section-subtitle {
-            text-align: center;
-            color: #a0a0a0;
-            margin-bottom: 50px;
-            font-size: 18px;
-        }
-        
-        .api-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-        }
-        
-        .api-card h3 {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: #667eea;
-        }
-        
-        .code-block {
-            background: #1a1a2e;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            overflow-x: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-        
-        .api-key-box {
-            background: rgba(102, 126, 234, 0.1);
-            border: 2px solid #667eea;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            margin: 30px 0;
-        }
-        
-        .api-key {
-            font-family: 'Courier New', monospace;
-            font-size: 18px;
-            color: #667eea;
-            font-weight: 700;
-            margin: 15px 0;
-            word-break: break-all;
-        }
-        
-        .pricing-grid {
+        .products-grid {
+            max-width: 1200px;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin: 40px 0;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
         }
         
-        .pricing-card {
-            background: rgba(255,255,255,0.05);
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 35px;
-            text-align: center;
+        .product-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-card:before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: -1;
+        }
+        
+        .product-card:hover:before {
+            opacity: 1;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);
+        }
+        
+        .product-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+        
+        .product-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .product-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+        
+        .product-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
             transition: all 0.3s;
         }
         
-        .pricing-card:hover {
-            border-color: #667eea;
+        .product-link:hover {
+            color: var(--accent);
+            gap: 1rem;
+        }
+        
+        /* Stats Section */
+        .stats {
+            position: relative;
+            padding: 5rem 2rem;
+            text-align: center;
+            z-index: 1;
+        }
+        
+        .stats-grid {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-card {
+            padding: 2rem;
+        }
+        
+        .stat-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        
+        /* Footer */
+        .footer {
+            position: relative;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .social-link {
+            color: var(--light);
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .social-link:hover {
+            color: var(--accent);
             transform: translateY(-5px);
         }
         
-        .pricing-card.featured {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.1);
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
-        .pricing-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        
-        .pricing-price {
-            font-size: 48px;
-            font-weight: 900;
-            color: #667eea;
-            margin: 20px 0;
-        }
-        
-        .pricing-features {
-            text-align: left;
-            margin: 25px 0;
-        }
-        
-        .pricing-feature {
-            padding: 8px 0;
-            color: #a0a0a0;
-        }
-        
-        .pricing-feature.included::before {
-            content: "✓ ";
-            color: #00D4AA;
-            font-weight: bold;
-        }
-        
-        /* Chat */
-        .chat-container {
-            max-width: 800px;
-            margin: 50px auto;
-        }
-        
-        .chat-box {
-            background: rgba(30, 30, 46, 0.8);
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .chat-header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            padding: 20px;
-            text-align: center;
-            font-size: 20px;
-            font-weight: 700;
-        }
-        
-        .messages {
-            padding: 20px;
-            min-height: 300px;
-            max-height: 400px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .message {
-            max-width: 80%;
-            padding: 12px 18px;
-            border-radius: 15px;
-        }
-        
-        .message.user {
-            align-self: flex-end;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-        }
-        
-        .message.bot {
-            align-self: flex-start;
-            background: rgba(255,255,255,0.1);
-        }
-        
-        .input-area {
-            padding: 15px;
-            display: flex;
-            gap: 10px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .input-area input {
-            flex: 1;
-            padding: 12px 20px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 25px;
-            color: white;
-            outline: none;
-        }
-        
-        .input-area button {
-            padding: 12px 25px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border: none;
-            border-radius: 25px;
-            color: white;
-            font-weight: 700;
-            cursor: pointer;
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 40px 20px;
-            color: #808080;
-            font-size: 14px;
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                min-height: 80vh;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="nav">
-        <div class="nav-logo">⚡ YUSUFAI</div>
-        <div class="nav-links">
-            <a class="nav-link active" onclick="showSection('home')">Home</a>
-            <a class="nav-link" onclick="showSection('features')">Features</a>
-            <a class="nav-link" onclick="showSection('api')">API</a>
-            <a class="nav-link" onclick="showSection('chat')">Try Now</a>
-        </div>
-    </nav>
+    <!-- Animated Background -->
+    <div class="bg-animation" id="bgCanvas"></div>
     
-    <!-- Home Section -->
-    <section class="section active" id="home">
-        <div class="hero">
-            <div class="hero-logo">
-                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#667eea"/>
-                            <stop offset="100%" style="stop-color:#764ba2"/>
-                        </linearGradient>
-                    </defs>
-                    <circle cx="100" cy="100" r="70" fill="url(#g)"/>
-                    <circle cx="70" cy="70" r="12" fill="#00D4AA"/>
-                    <circle cx="130" cy="70" r="12" fill="#CC785C"/>
-                    <circle cx="70" cy="130" r="12" fill="#4285F4"/>
-                    <circle cx="130" cy="130" r="12" fill="#0668E1"/>
-                    <circle cx="100" cy="100" r="30" fill="white"/>
-                    <text x="100" y="95" font-size="16" font-weight="bold" text-anchor="middle" fill="#667eea">YUSUF</text>
-                    <text x="100" y="110" font-size="20" font-weight="bold" text-anchor="middle" fill="#764ba2">AI</text>
-                </svg>
-            </div>
-            
-            <div class="title">YUSUFAI</div>
-            <p class="tagline">Cheksiz Imkoniyatlar AI Platformasi</p>
-            
-            <div class="ai-logos">
-                <div class="ai-logo-item">🤖 ChatGPT</div>
-                <div class="ai-logo-item">🧠 Claude</div>
-                <div class="ai-logo-item">💎 Gemini</div>
-                <div class="ai-logo-item">🦙 Llama</div>
-                <div class="ai-logo-item">⚡ +10 more</div>
-            </div>
-            
-            <p class="subtitle">
-                🚀 Hech qanday cheklov yo'q - Har narsa mumkin!<br>
-                ChatGPT + Claude + Gemini + Llama = 100% BEPUL!<br>
-                13 yoshli Muhammad Yusuf tomonidan yaratilgan 🇺🇿
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="logo">YusufAI</h1>
+            <p class="tagline">⚡ Cheksiz Imkoniyatlar ⚡</p>
+            <p class="creator-info">
+                <strong>Muhammad Yusuf (13 yosh)</strong> tomonidan yaratilgan<br>
+                O'zbekistonning birinchi yosh AI platformasi 🇺🇿
             </p>
-            
-            <button class="cta-btn" onclick="showSection('chat')">🚀 Boshlash</button>
-            <button class="cta-btn secondary" onclick="showSection('api')">📚 API Docs</button>
+            <a href="#ai-products" class="cta-button">AI'larni Ko'rish 🚀</a>
         </div>
     </section>
     
-    <!-- Features Section -->
-    <section class="section" id="features">
-        <div class="api-container">
-            <h2 class="section-title">Imkoniyatlar</h2>
-            <p class="section-subtitle">15+ professional funksiya - barchasi bepul va cheksiz!</p>
-            
-            <div class="features-grid">
-                <div class="feature">
-                    <div class="feature-icon">💬</div>
-                    <div class="feature-title">AI Chat</div>
-                    <div class="feature-desc">ChatGPT, Claude, Gemini kabi</div>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">🎨</div>
-                    <div class="feature-title">Rasm</div>
-                    <div class="feature-desc">DALL-E, Midjourney kabi</div>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">💻</div>
-                    <div class="feature-title">Kod</div>
-                    <div class="feature-desc">GitHub Copilot kabi</div>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">🔤</div>
-                    <div class="feature-title">Tarjimon</div>
-                    <div class="feature-desc">100+ til</div>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">🧮</div>
-                    <div class="feature-title">Matematik</div>
-                    <div class="feature-desc">WolframAlpha kabi</div>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">🤖</div>
-                    <div class="feature-title">AI Creator</div>
-                    <div class="feature-desc">O'z AI'ingizni yarat</div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- API Section -->
-    <section class="section" id="api">
-        <div class="api-container">
-            <h2 class="section-title">YusufAI API</h2>
-            <p class="section-subtitle">O'z app'ingizga AI qo'shing - oson va tez!</p>
-            
-            <!-- Quick Start -->
-            <div class="api-card">
-                <h3>🚀 Quick Start</h3>
-                <p style="color: #a0a0a0; margin-bottom: 20px;">
-                    YusufAI API ni 5 daqiqada integratsiya qiling!
+    <!-- AI Products Section -->
+    <section class="ai-products" id="ai-products">
+        <h2 class="section-title">🤖 Men Yaratgan AI'lar</h2>
+        
+        <div class="products-grid">
+            <!-- ChatXMY -->
+            <div class="product-card" style="animation-delay: 0.1s;">
+                <span class="product-icon">💬</span>
+                <h3 class="product-title">ChatXMY</h3>
+                <p class="product-description">
+                    Birinchi AI chatbot. O'zbek tilida suhbat, savolga javob, yordam berish. 
+                    Groq Llama 3.3 asosida ishlab chiqilgan.
                 </p>
-                
-                <div class="api-key-box">
-                    <div style="font-size: 18px; margin-bottom: 10px;">🔑 Demo API Key:</div>
-                    <div class="api-key">yusufai_demo_key_2026_free</div>
-                    <div style="font-size: 12px; color: #808080; margin-top: 10px;">
-                        Production uchun: hello@yusufai.uz
-                    </div>
-                </div>
+                <a href="https://chatxmy.netlify.app" class="product-link" target="_blank">
+                    Ko'rish →
+                </a>
             </div>
             
-            <!-- Code Example -->
-            <div class="api-card">
-                <h3>💻 Code Example</h3>
-                <p style="color: #a0a0a0; margin-bottom: 15px;">JavaScript:</p>
-                
-                <div class="code-block">
-<span style="color: #CC785C">const</span> response = <span style="color: #CC785C">await</span> <span style="color: #00D4AA">fetch</span>(<span style="color: #FFD700">'https://api.yusufai.uz/v1/chat'</span>, {
-  <span style="color: #4285F4">method</span>: <span style="color: #FFD700">'POST'</span>,
-  <span style="color: #4285F4">headers</span>: {
-    <span style="color: #FFD700">'Authorization'</span>: <span style="color: #FFD700">'Bearer yusufai_demo_key_2026_free'</span>,
-    <span style="color: #FFD700">'Content-Type'</span>: <span style="color: #FFD700">'application/json'</span>
-  },
-  <span style="color: #4285F4">body</span>: <span style="color: #00D4AA">JSON.stringify</span>({
-    <span style="color: #4285F4">message</span>: <span style="color: #FFD700">"Salom, YusufAI!"</span>,
-    <span style="color: #4285F4">model</span>: <span style="color: #FFD700">"yusufai-v1"</span>
-  })
-});
-
-<span style="color: #CC785C">const</span> data = <span style="color: #CC785C">await</span> response.<span style="color: #00D4AA">json</span>();
-<span style="color: #00D4AA">console.log</span>(data.response);
-                </div>
-                
-                <p style="color: #a0a0a0; margin-top: 15px;">Python:</p>
-                
-                <div class="code-block">
-<span style="color: #CC785C">import</span> requests
-
-url = <span style="color: #FFD700">"https://api.yusufai.uz/v1/chat"</span>
-headers = {
-    <span style="color: #FFD700">"Authorization"</span>: <span style="color: #FFD700">"Bearer yusufai_demo_key_2026_free"</span>,
-    <span style="color: #FFD700">"Content-Type"</span>: <span style="color: #FFD700">"application/json"</span>
-}
-data = {
-    <span style="color: #FFD700">"message"</span>: <span style="color: #FFD700">"Salom, YusufAI!"</span>,
-    <span style="color: #FFD700">"model"</span>: <span style="color: #FFD700">"yusufai-v1"</span>
-}
-
-response = requests.<span style="color: #00D4AA">post</span>(url, headers=headers, json=data)
-<span style="color: #00D4AA">print</span>(response.json()[<span style="color: #FFD700">"response"</span>])
-                </div>
+            <!-- YusufAI Assistant -->
+            <div class="product-card" style="animation-delay: 0.2s;">
+                <span class="product-icon">🤖</span>
+                <h3 class="product-title">YusufAI Assistant</h3>
+                <p class="product-description">
+                    Kuchli AI yordamchi. Chat, rasm yaratish, tarjima, matematik masala yechish 
+                    va kod yozishda yordam beradi.
+                </p>
+                <a href="#" class="product-link">
+                    Tez Orada →
+                </a>
             </div>
             
-            <!-- Endpoints -->
-            <div class="api-card">
-                <h3>🔌 API Endpoints</h3>
-                
-                <div style="margin: 20px 0;">
-                    <div style="padding: 15px; background: rgba(0,212,170,0.1); border-left: 4px solid #00D4AA; margin-bottom: 15px; border-radius: 5px;">
-                        <div style="font-weight: 700; margin-bottom: 5px;">POST /v1/chat</div>
-                        <div style="color: #a0a0a0; font-size: 14px;">AI chat - ChatGPT, Claude, Gemini</div>
-                    </div>
-                    
-                    <div style="padding: 15px; background: rgba(66,133,244,0.1); border-left: 4px solid #4285F4; margin-bottom: 15px; border-radius: 5px;">
-                        <div style="font-weight: 700; margin-bottom: 5px;">POST /v1/image</div>
-                        <div style="color: #a0a0a0; font-size: 14px;">Image generation - DALL-E kabi</div>
-                    </div>
-                    
-                    <div style="padding: 15px; background: rgba(255,107,157,0.1); border-left: 4px solid #FF6B9D; margin-bottom: 15px; border-radius: 5px;">
-                        <div style="font-weight: 700; margin-bottom: 5px;">POST /v1/translate</div>
-                        <div style="color: #a0a0a0; font-size: 14px;">Translation - 100+ languages</div>
-                    </div>
-                    
-                    <div style="padding: 15px; background: rgba(204,120,92,0.1); border-left: 4px solid #CC785C; border-radius: 5px;">
-                        <div style="font-weight: 700; margin-bottom: 5px;">POST /v1/code</div>
-                        <div style="color: #a0a0a0; font-size: 14px;">Code generation - GitHub Copilot kabi</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Pricing -->
-            <div class="api-card">
-                <h3>💰 API Pricing</h3>
-                
-                <div class="pricing-grid">
-                    <div class="pricing-card featured">
-                        <div class="pricing-title">Free</div>
-                        <div class="pricing-price">$0</div>
-                        <div style="color: #808080; margin-bottom: 20px;">/month</div>
-                        <div class="pricing-features">
-                            <div class="pricing-feature included">1,000 requests/day</div>
-                            <div class="pricing-feature included">All features</div>
-                            <div class="pricing-feature included">Community support</div>
-                            <div class="pricing-feature included">99.9% uptime</div>
-                        </div>
-                        <button class="cta-btn" style="width: 100%; margin: 0;">Get Started</button>
-                    </div>
-                    
-                    <div class="pricing-card">
-                        <div class="pricing-title">Pro</div>
-                        <div class="pricing-price">$29</div>
-                        <div style="color: #808080; margin-bottom: 20px;">/month</div>
-                        <div class="pricing-features">
-                            <div class="pricing-feature included">100,000 requests/day</div>
-                            <div class="pricing-feature included">Priority support</div>
-                            <div class="pricing-feature included">Custom models</div>
-                            <div class="pricing-feature included">99.99% uptime SLA</div>
-                        </div>
-                        <button class="cta-btn secondary" style="width: 100%; margin: 0;">Coming Soon</button>
-                    </div>
-                    
-                    <div class="pricing-card">
-                        <div class="pricing-title">Enterprise</div>
-                        <div class="pricing-price">Custom</div>
-                        <div style="color: #808080; margin-bottom: 20px;">contact us</div>
-                        <div class="pricing-features">
-                            <div class="pricing-feature included">Unlimited requests</div>
-                            <div class="pricing-feature included">Dedicated support</div>
-                            <div class="pricing-feature included">On-premise deployment</div>
-                            <div class="pricing-feature included">Custom integration</div>
-                        </div>
-                        <button class="cta-btn secondary" style="width: 100%; margin: 0;">Contact Sales</button>
-                    </div>
-                </div>
+            <!-- Telegram Bot -->
+            <div class="product-card" style="animation-delay: 0.3s;">
+                <span class="product-icon">📱</span>
+                <h3 class="product-title">Telegram Bot</h3>
+                <p class="product-description">
+                    @YuselAI_bot - Telegram'da AI bot. Chat, rasm yaratish, tarjimon. 
+                    24/7 online va bepul!
+                </p>
+                <a href="https://t.me/YuselAI_bot" class="product-link" target="_blank">
+                    Ochish →
+                </a>
             </div>
         </div>
     </section>
     
-    <!-- Chat Section -->
-    <section class="section" id="chat">
-        <div class="chat-container">
-            <div class="chat-box">
-                <div class="chat-header">⚡ YusufAI - Cheksiz Imkoniyatlar</div>
-                <div class="messages" id="messages">
-                    <div class="message bot">
-                        👋 Salom! Men YusufAI - cheksiz imkoniyatlar AI platformasi!<br><br>
-                        ✨ Hech qanday cheklov yo'q:<br>
-                        • Limitless messages<br>
-                        • Limitless creativity<br>
-                        • Limitless possibilities<br><br>
-                        ChatGPT, Claude, Gemini va boshqalar - barchasi bir joyda, 100% bepul!<br><br>
-                        Sizga qanday yordam bera olaman?
-                    </div>
-                </div>
-                <div class="input-area">
-                    <input type="text" id="input" placeholder="Xabar..." onkeypress="if(event.key==='Enter')send()">
-                    <button onclick="send()">📤</button>
-                </div>
+    <!-- Stats Section -->
+    <section class="stats">
+        <h2 class="section-title">📊 Statistika</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">AI Platformalar</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">13</div>
+                <div class="stat-label">Yosh Dasturchi</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Bepul</div>
             </div>
         </div>
     </section>
     
     <!-- Footer -->
-    <div class="footer">
-        © 2026 YusufAI - Cheksiz Imkoniyatlar Platformasi<br>
-        Limitless AI • No Restrictions • 100% Free<br>
-        Muhammad Yusuf (13) | Farg'ona, O'zbekiston 🇺🇿
-    </div>
-
+    <footer class="footer">
+        <div class="social-links">
+            <a href="https://t.me/YuselAI_bot" class="social-link" target="_blank" title="Telegram">📱</a>
+            <a href="https://instagram.com/khujayev._" class="social-link" target="_blank" title="Instagram">📸</a>
+            <a href="https://github.com/yusuf18081998-blip" class="social-link" target="_blank" title="GitHub">💻</a>
+        </div>
+        <p>&copy; 2026 YusufAI. Muhammad Yusuf tomonidan yaratilgan.</p>
+        <p style="margin-top: 1rem; opacity: 0.7;">Farg'ona, O'zbekiston 🇺🇿</p>
+    </footer>
+    
     <script>
-        const API = 'https://api.groq.com/openai/v1/chat/completions';
-        const KEY = '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';
+        // Animated particles background
+        const canvas = document.createElement('canvas');
+        const bgAnimation = document.getElementById('bgCanvas');
+        bgAnimation.appendChild(canvas);
+        const ctx = canvas.getContext('2d');
         
-        function showSection(section) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById(section).classList.add('active');
-            event.target.classList.add('active');
-            window.scrollTo(0, 0);
-        }
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
         
-        function addMsg(text, type) {
-            const div = document.createElement('div');
-            div.className = 'message ' + type;
-            div.innerHTML = text;
-            document.getElementById('messages').appendChild(div);
-            document.getElementById('messages').scrollTop = 999999;
-            return div;
-        }
+        const particles = [];
+        const particleCount = 100;
         
-        async function send() {
-            const input = document.getElementById('input');
-            const msg = input.value.trim();
-            if (!msg) return;
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+            }
             
-            addMsg(msg, 'user');
-            input.value = '';
-            
-            const typing = addMsg('⏳ Javob...', 'bot');
-            
-            try {
-                const lower = msg.toLowerCase();
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
                 
-                if (lower.includes('rasm')) {
-                    const prompt = encodeURIComponent(msg.replace(/rasm/gi, '').trim());
-                    const imgUrl = 'https://image.pollinations.ai/prompt/' + prompt + '?width=512&height=512';
-                    typing.remove();
-                    addMsg('🎨 Rasm:<br><img src="' + imgUrl + '" style="max-width:100%;border-radius:10px;margin-top:10px">', 'bot');
-                } else if (lower.includes('tarjima')) {
-                    const text = msg.replace(/tarjima/gi, '').trim();
-                    const url = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=auto|ru';
-                    const res = await fetch(url);
-                    const data = await res.json();
-                    typing.remove();
-                    addMsg('🔤 ' + data.responseData.translatedText, 'bot');
-                } else {
-                    const response = await fetch(API, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + KEY },
-                        body: JSON.stringify({
-                            model: 'llama-3.3-70b-versatile',
-                            messages: [{ role: 'user', content: 'Sen YusufAI - cheksiz imkoniyatlar platformasi. ' + msg + ' O\'zbek tilida!' }],
-                            max_tokens: 500
-                        })
-                    });
-                    const data = await response.json();
-                    typing.remove();
-                    addMsg(data.choices[0].message.content, 'bot');
-                }
-            } catch (e) {
-                typing.remove();
-                addMsg('❌ Xatolik', 'bot');
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            
+            draw() {
+                ctx.fillStyle = '#667eea';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
         
-        const manifestData = {
-            "name": "YusufAI - Cheksiz Imkoniyatlar",
-            "short_name": "YusufAI",
-            "description": "Limitless AI Platform - No restrictions, 100% free!",
-            "start_url": "/",
-            "display": "standalone",
-            "background_color": "#0f0c29",
-            "theme_color": "#667eea",
-            "icons": [{
-                "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><defs><linearGradient id='g'><stop offset='0' stop-color='%23667eea'/><stop offset='1' stop-color='%23764ba2'/></linearGradient></defs><circle cx='100' cy='100' r='90' fill='url(%23g)'/><circle cx='70' cy='70' r='12' fill='%2300D4AA'/><circle cx='130' cy='70' r='12' fill='%23CC785C'/><circle cx='70' cy='130' r='12' fill='%234285F4'/><circle cx='130' cy='130' r='12' fill='%230668E1'/><circle cx='100' cy='100' r='30' fill='white'/><text x='100' y='110' font-size='24' font-weight='bold' text-anchor='middle' fill='%23667eea'>AI</text></svg>",
-                "sizes": "512x512",
-                "type": "image/svg+xml"
-            }]
+        function init() {
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let particle of particles) {
+                particle.update();
+                particle.draw();
+            }
+            
+            // Connect particles
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 100) {
+                        ctx.strokeStyle = `rgba(102, 126, 234, ${1 - distance / 100})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        init();
+        animate();
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Add scroll animation to cards
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
         };
         
-        const blob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
-        document.querySelector('link[rel="manifest"]').href = URL.createObjectURL(blob);
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.product-card').forEach(card => {
+            observer.observe(card);
+        });
     </script>
 </body>
 </html>
