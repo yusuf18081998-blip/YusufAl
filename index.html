@@ -3,542 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YusufAI - Cheksiz Imkoniyatlar | O'zbek AI Platformasi</title>
-    <meta name="description" content="YusufAI - Muhammad Yusuf (13) tomonidan yaratilgan sun'iy intellekt platformasi. ChatXMY, Image Generator, Translator va boshqa AI xizmatlari.">
-    <meta name="keywords" content="YusufAI, ChatXMY, O'zbek AI, Uzbekistan AI, Muhammad Yusuf, Sun'iy Intellekt">
-    <meta name="author" content="Muhammad Yusuf">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="YusufAI - Cheksiz Imkoniyatlar">
-    <meta property="og:description" content="O'zbekistonning birinchi yosh dasturchi tomonidan yaratilgan AI platformasi">
-    <meta property="og:type" content="website">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
+    <title>YusufAI - AI Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #667eea;
-            --secondary: #764ba2;
-            --accent: #f093fb;
-            --dark: #1a1a2e;
-            --light: #f8f9fa;
-            --text: #2c3e50;
-            --glow: rgba(102, 126, 234, 0.5);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, var(--dark) 0%, #16213e 100%);
-            color: var(--light);
-            overflow-x: hidden;
-        }
-        
-        /* Animated Background */
-        .bg-animation {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 0;
-            opacity: 0.1;
-        }
-        
-        .bg-animation canvas {
-            display: block;
-        }
-        
-        /* Hero Section */
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2rem;
-            z-index: 1;
-        }
-        
-        .hero-content {
-            max-width: 900px;
-            animation: fadeInUp 1s ease-out;
-        }
-        
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 40px var(--glow);
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-        
-        @keyframes glow {
-            from {
-                filter: drop-shadow(0 0 20px var(--glow));
-            }
-            to {
-                filter: drop-shadow(0 0 40px var(--primary));
-            }
-        }
-        
-        .tagline {
-            font-size: clamp(1.2rem, 3vw, 2rem);
-            font-weight: 300;
-            margin-bottom: 2rem;
-            color: var(--accent);
-            letter-spacing: 2px;
-        }
-        
-        .creator-info {
-            font-size: 1.1rem;
-            margin-bottom: 3rem;
-            opacity: 0.9;
-        }
-        
-        .creator-info strong {
-            color: var(--accent);
-            font-weight: 600;
-        }
-        
-        .cta-button {
-            display: inline-block;
-            padding: 1.2rem 3rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .cta-button:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
-        }
-        
-        .cta-button:hover:before {
-            left: 100%;
-        }
-        
-        .cta-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
-        }
-        
-        /* AI Products Section */
-        .ai-products {
-            position: relative;
-            padding: 5rem 2rem;
-            z-index: 1;
-        }
-        
-        .section-title {
-            text-align: center;
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            margin-bottom: 3rem;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .products-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 1rem;
-        }
-        
-        .product-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2.5rem;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .product-card:before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 20px;
-            opacity: 0;
-            transition: opacity 0.4s;
-            z-index: -1;
-        }
-        
-        .product-card:hover:before {
-            opacity: 1;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);
-        }
-        
-        .product-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            display: block;
-        }
-        
-        .product-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: var(--accent);
-        }
-        
-        .product-description {
-            font-size: 1rem;
-            line-height: 1.6;
-            opacity: 0.9;
-            margin-bottom: 1.5rem;
-        }
-        
-        .product-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .product-link:hover {
-            color: var(--accent);
-            gap: 1rem;
-        }
-        
-        /* Stats Section */
-        .stats {
-            position: relative;
-            padding: 5rem 2rem;
-            text-align: center;
-            z-index: 1;
-        }
-        
-        .stats-grid {
-            max-width: 900px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-        }
-        
-        .stat-card {
-            padding: 2rem;
-        }
-        
-        .stat-number {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-label {
-            font-size: 1rem;
-            opacity: 0.8;
-        }
-        
-        /* Footer */
-        .footer {
-            position: relative;
-            padding: 3rem 2rem;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 1;
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .social-link {
-            color: var(--light);
-            font-size: 1.5rem;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-        
-        .social-link:hover {
-            color: var(--accent);
-            transform: translateY(-5px);
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero {
-                min-height: 80vh;
-            }
-            
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        * {margin: 0; padding: 0; box-sizing: border-box;}
+        body {font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh;}
+        .auth-container {display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px;}
+        .auth-box {background: white; padding: 40px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-width: 400px; width: 100%;}
+        .auth-box h2 {color: #667eea; margin-bottom: 30px; text-align: center;}
+        .input-group {margin-bottom: 20px;}
+        .input-group label {display: block; margin-bottom: 8px; color: #333; font-weight: 600;}
+        .input-group input {width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px;}
+        .input-group input:focus {outline: none; border-color: #667eea;}
+        .btn {width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer;}
+        .btn:hover {transform: translateY(-2px);}
+        .link-text {text-align: center; margin-top: 20px; color: #666;}
+        .link-text a {color: #667eea; text-decoration: none; font-weight: 600;}
+        .app-container {display: none; flex-direction: column; height: 100vh;}
+        .header {background: white; padding: 15px 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center;}
+        .logo {font-size: 24px; font-weight: bold; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+        .logout-btn {padding: 8px 20px; background: #ff4757; color: white; border: none; border-radius: 6px; cursor: pointer;}
+        .main-content {flex: 1; display: flex; overflow: hidden;}
+        .sidebar {width: 250px; background: white; padding: 20px; box-shadow: 2px 0 10px rgba(0,0,0,0.1); overflow-y: auto;}
+        .new-chat-btn {width: 100%; padding: 12px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 8px; margin-bottom: 20px; cursor: pointer; font-weight: 600;}
+        .history-item {padding: 12px; margin-bottom: 8px; background: #f5f5f5; border-radius: 8px; cursor: pointer;}
+        .history-item:hover {background: #e0e0e0;}
+        .history-item.active {background: #667eea; color: white;}
+        .chat-area {flex: 1; display: flex; flex-direction: column; background: rgba(255,255,255,0.95);}
+        .messages {flex: 1; padding: 20px; overflow-y: auto;}
+        .message {margin-bottom: 20px; display: flex; gap: 10px;}
+        .message.user {justify-content: flex-end;}
+        .message-content {max-width: 70%; padding: 12px 16px; border-radius: 12px;}
+        .message.user .message-content {background: linear-gradient(135deg, #667eea, #764ba2); color: white;}
+        .message.ai .message-content {background: #f0f0f0; color: #333;}
+        .input-area {padding: 20px; background: white; border-top: 1px solid #e0e0e0;}
+        .input-container {display: flex; gap: 10px;}
+        .input-container input {flex: 1; padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 25px; font-size: 16px;}
+        .send-btn {padding: 12px 30px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: 600;}
+        .hidden {display: none;}
+        .error {color: #ff4757; font-size: 14px; margin-top: 5px;}
     </style>
 </head>
 <body>
-    <!-- Animated Background -->
-    <div class="bg-animation" id="bgCanvas"></div>
-    
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="logo">YusufAI</h1>
-            <p class="tagline">⚡ Cheksiz Imkoniyatlar ⚡</p>
-            <p class="creator-info">
-                <strong>Muhammad Yusuf (13 yosh)</strong> tomonidan yaratilgan<br>
-                O'zbekistonning birinchi yosh AI platformasi 🇺🇿
-            </p>
-            <a href="#ai-products" class="cta-button">AI'larni Ko'rish 🚀</a>
+    <div id="loginPage" class="auth-container">
+        <div class="auth-box">
+            <h2>🤖 YusufAI Kirish</h2>
+            <div class="input-group"><label>Email</label><input type="email" id="loginEmail" placeholder="email@example.com"></div>
+            <div class="input-group"><label>Parol</label><input type="password" id="loginPassword" placeholder="••••••••"></div>
+            <div id="loginError" class="error"></div>
+            <button class="btn" onclick="login()">Kirish</button>
+            <div class="link-text">Hisobingiz yo'qmi? <a href="#" onclick="showSignup()">Ro'yxatdan o'tish</a></div>
         </div>
-    </section>
-    
-    <!-- AI Products Section -->
-    <section class="ai-products" id="ai-products">
-        <h2 class="section-title">🤖 Men Yaratgan AI'lar</h2>
-        
-        <div class="products-grid">
-            <!-- ChatXMY -->
-            <div class="product-card" style="animation-delay: 0.1s;">
-                <span class="product-icon">💬</span>
-                <h3 class="product-title">ChatXMY</h3>
-                <p class="product-description">
-                    Birinchi AI chatbot. O'zbek tilida suhbat, savolga javob, yordam berish. 
-                    Groq Llama 3.3 asosida ishlab chiqilgan.
-                </p>
-                <a href="https://chatxmy.netlify.app" class="product-link" target="_blank">
-                    Ko'rish →
-                </a>
+    </div>
+
+    <div id="signupPage" class="auth-container hidden">
+        <div class="auth-box">
+            <h2>✨ Ro'yxatdan O'tish</h2>
+            <div class="input-group"><label>Ism</label><input type="text" id="signupName" placeholder="Ismingiz"></div>
+            <div class="input-group"><label>Email</label><input type="email" id="signupEmail" placeholder="email@example.com"></div>
+            <div id="signupError" class="error"></div>
+            <button class="btn" onclick="sendVerification()">Tasdiqlash Kodi Yuborish</button>
+            <div class="link-text">Hisobingiz bormi? <a href="#" onclick="showLogin()">Kirish</a></div>
+        </div>
+    </div>
+
+    <div id="verifyPage" class="auth-container hidden">
+        <div class="auth-box">
+            <h2>📧 Email Tasdiqlash</h2>
+            <p style="text-align: center; margin-bottom: 20px;"><strong id="verifyEmail"></strong> manziliga kod yuborildi</p>
+            <div class="input-group"><label>6-raqamli kod</label><input type="text" id="verifyCode" placeholder="123456" maxlength="6"></div>
+            <div class="input-group"><label>Parol yarating</label><input type="password" id="verifyPassword" placeholder="••••••••"></div>
+            <div id="verifyError" class="error"></div>
+            <button class="btn" onclick="verifyAndRegister()">Tasdiqlash</button>
+            <div class="link-text"><a href="#" onclick="showLogin()">Bekor qilish</a></div>
+        </div>
+    </div>
+
+    <div id="appContainer" class="app-container">
+        <div class="header">
+            <div class="logo">YusufAI Platform</div>
+            <div><span id="userName"></span><button class="logout-btn" onclick="logout()">Chiqish</button></div>
+        </div>
+        <div class="main-content">
+            <div class="sidebar">
+                <button class="new-chat-btn" onclick="newChat()">➕ Yangi Chat</button>
+                <div id="chatHistory"></div>
             </div>
-            
-            <!-- YusufAI Assistant -->
-            <div class="product-card" style="animation-delay: 0.2s;">
-                <span class="product-icon">🤖</span>
-                <h3 class="product-title">YusufAI Assistant</h3>
-                <p class="product-description">
-                    Kuchli AI yordamchi. Chat, rasm yaratish, tarjima, matematik masala yechish 
-                    va kod yozishda yordam beradi.
-                </p>
-                <a href="#" class="product-link">
-                    Tez Orada →
-                </a>
-            </div>
-            
-            <!-- Telegram Bot -->
-            <div class="product-card" style="animation-delay: 0.3s;">
-                <span class="product-icon">📱</span>
-                <h3 class="product-title">Telegram Bot</h3>
-                <p class="product-description">
-                    @YuselAI_bot - Telegram'da AI bot. Chat, rasm yaratish, tarjimon. 
-                    24/7 online va bepul!
-                </p>
-                <a href="https://t.me/YuselAI_bot" class="product-link" target="_blank">
-                    Ochish →
-                </a>
+            <div class="chat-area">
+                <div class="messages" id="messages"></div>
+                <div class="input-area">
+                    <div class="input-container">
+                        <input type="text" id="messageInput" placeholder="Xabar yozing..." onkeypress="if(event.key==='Enter') sendMessage()">
+                        <button class="send-btn" onclick="sendMessage()">Yuborish</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
-    
-    <!-- Stats Section -->
-    <section class="stats">
-        <h2 class="section-title">📊 Statistika</h2>
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number">3</div>
-                <div class="stat-label">AI Platformalar</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">13</div>
-                <div class="stat-label">Yosh Dasturchi</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">100%</div>
-                <div class="stat-label">Bepul</div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="social-links">
-            <a href="https://t.me/YuselAI_bot" class="social-link" target="_blank" title="Telegram">📱</a>
-            <a href="https://instagram.com/khujayev._" class="social-link" target="_blank" title="Instagram">📸</a>
-            <a href="https://github.com/yusuf18081998-blip" class="social-link" target="_blank" title="GitHub">💻</a>
-        </div>
-        <p>&copy; 2026 YusufAI. Muhammad Yusuf tomonidan yaratilgan.</p>
-        <p style="margin-top: 1rem; opacity: 0.7;">Farg'ona, O'zbekiston 🇺🇿</p>
-    </footer>
-    
+    </div>
+
     <script>
-        // Animated particles background
-        const canvas = document.createElement('canvas');
-        const bgAnimation = document.getElementById('bgCanvas');
-        bgAnimation.appendChild(canvas);
-        const ctx = canvas.getContext('2d');
-        
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        
-        const particles = [];
-        const particleCount = 100;
-        
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 1;
-                this.speedX = Math.random() * 1 - 0.5;
-                this.speedY = Math.random() * 1 - 0.5;
-            }
-            
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                
-                if (this.x > canvas.width) this.x = 0;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0;
-                if (this.y < 0) this.y = canvas.height;
-            }
-            
-            draw() {
-                ctx.fillStyle = '#667eea';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-        
-        function init() {
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
-        }
-        
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            for (let particle of particles) {
-                particle.update();
-                particle.draw();
-            }
-            
-            // Connect particles
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance < 100) {
-                        ctx.strokeStyle = `rgba(102, 126, 234, ${1 - distance / 100})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-            
-            requestAnimationFrame(animate);
-        }
-        
-        init();
-        animate();
-        
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-        
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-        
-        // Add scroll animation to cards
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
+        const API_KEY = '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';
+        let currentUser = null, currentChat = null, chats = [], verificationCode = null, pendingUser = null;
+
+        window.onload = () => {
+            const saved = localStorage.getItem('yusufai_user');
+            if (saved) {currentUser = JSON.parse(saved); loadChats(); showApp();}
         };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
-                }
-            });
-        }, observerOptions);
-        
-        document.querySelectorAll('.product-card').forEach(card => {
-            observer.observe(card);
-        });
+
+        function showLogin() {
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('signupPage').classList.add('hidden');
+            document.getElementById('verifyPage').classList.add('hidden');
+        }
+
+        function showSignup() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('signupPage').classList.remove('hidden');
+        }
+
+        function sendVerification() {
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            if (!name || !email) {document.getElementById('signupError').textContent = 'Barcha maydonlarni to\'ldiring'; return;}
+            
+            const users = JSON.parse(localStorage.getItem('yusufai_users') || '[]');
+            if (users.find(u => u.email === email)) {document.getElementById('signupError').textContent = 'Bu email ro\'yxatdan o\'tgan'; return;}
+            
+            verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+            pendingUser = {name, email};
+            alert('Tasdiqlash kodi: ' + verificationCode + '\n\n(Demo rejimida)');
+            
+            document.getElementById('verifyEmail').textContent = email;
+            document.getElementById('signupPage').classList.add('hidden');
+            document.getElementById('verifyPage').classList.remove('hidden');
+        }
+
+        function verifyAndRegister() {
+            const code = document.getElementById('verifyCode').value;
+            const password = document.getElementById('verifyPassword').value;
+            
+            if (code !== verificationCode) {document.getElementById('verifyError').textContent = 'Noto\'g\'ri kod'; return;}
+            if (!password || password.length < 6) {document.getElementById('verifyError').textContent = 'Parol kamida 6 ta belgi'; return;}
+            
+            const users = JSON.parse(localStorage.getItem('yusufai_users') || '[]');
+            currentUser = {id: Date.now(), name: pendingUser.name, email: pendingUser.email, password: btoa(password)};
+            users.push(currentUser);
+            localStorage.setItem('yusufai_users', JSON.stringify(users));
+            localStorage.setItem('yusufai_user', JSON.stringify(currentUser));
+            loadChats(); showApp();
+        }
+
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const users = JSON.parse(localStorage.getItem('yusufai_users') || '[]');
+            const user = users.find(u => u.email === email && u.password === btoa(password));
+            if (!user) {document.getElementById('loginError').textContent = 'Email yoki parol noto\'g\'ri'; return;}
+            currentUser = user;
+            localStorage.setItem('yusufai_user', JSON.stringify(currentUser));
+            loadChats(); showApp();
+        }
+
+        function logout() {localStorage.removeItem('yusufai_user'); location.reload();}
+
+        function showApp() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('signupPage').classList.add('hidden');
+            document.getElementById('verifyPage').classList.add('hidden');
+            document.getElementById('appContainer').style.display = 'flex';
+            document.getElementById('userName').textContent = currentUser.name;
+            newChat();
+        }
+
+        function loadChats() {
+            const saved = localStorage.getItem(`yusufai_chats_${currentUser.id}`);
+            chats = saved ? JSON.parse(saved) : [];
+            renderHistory();
+        }
+
+        function saveChats() {localStorage.setItem(`yusufai_chats_${currentUser.id}`, JSON.stringify(chats));}
+
+        function newChat() {
+            currentChat = {id: Date.now(), title: 'Yangi Suhbat', messages: []};
+            chats.unshift(currentChat);
+            saveChats(); renderHistory(); renderMessages();
+        }
+
+        function selectChat(id) {currentChat = chats.find(c => c.id === id); renderHistory(); renderMessages();}
+
+        function renderHistory() {
+            document.getElementById('chatHistory').innerHTML = chats.map(c => 
+                `<div class="history-item ${c.id === currentChat?.id ? 'active' : ''}" onclick="selectChat(${c.id})">${c.title}</div>`
+            ).join('');
+        }
+
+        function renderMessages() {
+            document.getElementById('messages').innerHTML = currentChat.messages.map(m => 
+                `<div class="message ${m.role}"><div class="message-content">${m.content}</div></div>`
+            ).join('');
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const msg = input.value.trim();
+            if (!msg || !currentChat) return;
+            
+            currentChat.messages.push({role: 'user', content: msg});
+            if (currentChat.messages.length === 1) currentChat.title = msg.substring(0, 30);
+            input.value = '';
+            renderMessages(); renderHistory();
+            
+            try {
+                const res = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}`},
+                    body: JSON.stringify({
+                        model: 'gpt-4',
+                        messages: currentChat.messages.map(m => ({role: m.role === 'ai' ? 'assistant' : m.role, content: m.content}))
+                    })
+                });
+                const data = await res.json();
+                currentChat.messages.push({role: 'ai', content: data.choices[0].message.content});
+                saveChats(); renderMessages();
+            } catch (e) {
+                currentChat.messages.push({role: 'ai', content: '❌ Xatolik'});
+                renderMessages();
+            }
+        }
     </script>
 </body>
 </html>
