@@ -1,0 +1,62 @@
+require('dotenv').config();
+const express = require('express');
+const fetch = require('node-fetch');
+const app = express();
+app.use(express.json());
+
+const PORT = process.env.PORT || 3000;
+
+// OpenAI API
+const OPENAI_API_KEY = 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
+// Claude API
+const CLAUDE_API_KEY = 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
+
+app.post('/chat', async (req, res) => {
+    const { message, ai } = req.body;
+
+    try {
+        let responseText = "Kechirasiz, tushunmadim 😅";
+
+        if (ai === "openai") {
+            // OpenAI API chaqirish
+            const r = await fetch("https://api.openai.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${OPENAI_API_KEY}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    model: "gpt-3.5-turbo",
+                    messages: [{ role: "user", content: message }]
+                })
+            });
+            const data = await r.json();
+            responseText = data.choices[0].message.content;
+        }
+
+        if (ai === "claude") {
+            // Claude API chaqirish
+            const r = await fetch("https://api.anthropic.com/v1/complete", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${CLAUDE_API_KEY}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    prompt: message,
+                    model: "claude-v1",
+                    max_tokens: 300
+                })
+            });
+            const data = await r.json();
+            responseText = data.completion;
+        }
+
+        res.json({ reply: responseText });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ reply: "Serverda xatolik yuz berdi" });
+    }
+});
+
+app.listen(PORT, () => console.log(`Server ${PORT} da ishlayapti`));
