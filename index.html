@@ -1,235 +1,61 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YusufAI - AI Platform</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {margin: 0; padding: 0; box-sizing: border-box;}
-        body {font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh;}
-        .auth-container {display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px;}
-        .auth-box {background: white; padding: 40px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-width: 400px; width: 100%;}
-        .auth-box h2 {color: #667eea; margin-bottom: 30px; text-align: center;}
-        .input-group {margin-bottom: 20px;}
-        .input-group label {display: block; margin-bottom: 8px; color: #333; font-weight: 600;}
-        .input-group input {width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px;}
-        .input-group input:focus {outline: none; border-color: #667eea;}
-        .btn {width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer;}
-        .btn:hover {transform: translateY(-2px);}
-        .link-text {text-align: center; margin-top: 20px; color: #666;}
-        .link-text a {color: #667eea; text-decoration: none; font-weight: 600;}
-        .app-container {display: none; flex-direction: column; height: 100vh;}
-        .header {background: white; padding: 15px 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center;}
-        .logo {font-size: 24px; font-weight: bold; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
-        .logout-btn {padding: 8px 20px; background: #ff4757; color: white; border: none; border-radius: 6px; cursor: pointer;}
-        .main-content {flex: 1; display: flex; overflow: hidden;}
-        .sidebar {width: 250px; background: white; padding: 20px; box-shadow: 2px 0 10px rgba(0,0,0,0.1); overflow-y: auto;}
-        .new-chat-btn {width: 100%; padding: 12px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 8px; margin-bottom: 20px; cursor: pointer; font-weight: 600;}
-        .history-item {padding: 12px; margin-bottom: 8px; background: #f5f5f5; border-radius: 8px; cursor: pointer;}
-        .history-item:hover {background: #e0e0e0;}
-        .history-item.active {background: #667eea; color: white;}
-        .chat-area {flex: 1; display: flex; flex-direction: column; background: rgba(255,255,255,0.95);}
-        .messages {flex: 1; padding: 20px; overflow-y: auto;}
-        .message {margin-bottom: 20px; display: flex; gap: 10px;}
-        .message.user {justify-content: flex-end;}
-        .message-content {max-width: 70%; padding: 12px 16px; border-radius: 12px;}
-        .message.user .message-content {background: linear-gradient(135deg, #667eea, #764ba2); color: white;}
-        .message.ai .message-content {background: #f0f0f0; color: #333;}
-        .input-area {padding: 20px; background: white; border-top: 1px solid #e0e0e0;}
-        .input-container {display: flex; gap: 10px;}
-        .input-container input {flex: 1; padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 25px; font-size: 16px;}
-        .send-btn {padding: 12px 30px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: 600;}
-        .hidden {display: none;}
-        .error {color: #ff4757; font-size: 14px; margin-top: 5px;}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YusufAI Multi-AI Chat</title>
+<style>
+body { font-family: Arial; background: #667eea; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; }
+.chat-container { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; width: 400px; }
+.messages { max-height: 300px; overflow-y: auto; margin-bottom: 10px; }
+.message { margin: 5px 0; padding: 5px 10px; border-radius: 5px; }
+.user { background: #fbbf24; color: black; text-align: right; }
+.ai { background: #1e3a8a; color: white; text-align: left; }
+</style>
 </head>
 <body>
-    <div id="loginPage" class="auth-container">
-        <div class="auth-box">
-            <h2>🤖 YusufAI Kirish</h2>
-            <div class="input-group"><label>Email</label><input type="email" id="loginEmail" placeholder="email@example.com"></div>
-            <div class="input-group"><label>Parol</label><input type="password" id="loginPassword" placeholder="••••••••"></div>
-            <div id="loginError" class="error"></div>
-            <button class="btn" onclick="login()">Kirish</button>
-            <div class="link-text">Hisobingiz yo'qmi? <a href="#" onclick="showSignup()">Ro'yxatdan o'tish</a></div>
-        </div>
-    </div>
+<div class="chat-container">
+    <div class="messages" id="messages"></div>
+    <input type="text" id="input" placeholder="Salom deb yozing..." />
+    <select id="ai-select">
+        <option value="openai">OpenAI GPT</option>
+        <option value="claude">Claude</option>
+    </select>
+    <button onclick="sendMessage()">Jo'nat</button>
+</div>
 
-    <div id="signupPage" class="auth-container hidden">
-        <div class="auth-box">
-            <h2>✨ Ro'yxatdan O'tish</h2>
-            <div class="input-group"><label>Ism</label><input type="text" id="signupName" placeholder="Ismingiz"></div>
-            <div class="input-group"><label>Email</label><input type="email" id="signupEmail" placeholder="email@example.com"></div>
-            <div id="signupError" class="error"></div>
-            <button class="btn" onclick="sendVerification()">Tasdiqlash Kodi Yuborish</button>
-            <div class="link-text">Hisobingiz bormi? <a href="#" onclick="showLogin()">Kirish</a></div>
-        </div>
-    </div>
+<script>
+const messages = document.getElementById('messages');
+const input = document.getElementById('input');
+const aiSelect = document.getElementById('ai-select');
 
-    <div id="verifyPage" class="auth-container hidden">
-        <div class="auth-box">
-            <h2>📧 Email Tasdiqlash</h2>
-            <p style="text-align: center; margin-bottom: 20px;"><strong id="verifyEmail"></strong> manziliga kod yuborildi</p>
-            <div class="input-group"><label>6-raqamli kod</label><input type="text" id="verifyCode" placeholder="123456" maxlength="6"></div>
-            <div class="input-group"><label>Parol yarating</label><input type="password" id="verifyPassword" placeholder="••••••••"></div>
-            <div id="verifyError" class="error"></div>
-            <button class="btn" onclick="verifyAndRegister()">Tasdiqlash</button>
-            <div class="link-text"><a href="#" onclick="showLogin()">Bekor qilish</a></div>
-        </div>
-    </div>
+function addMessage(text, sender) {
+    const div = document.createElement('div');
+    div.className = `message ${sender}`;
+    div.textContent = text;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+}
 
-    <div id="appContainer" class="app-container">
-        <div class="header">
-            <div class="logo">YusufAI Platform</div>
-            <div><span id="userName"></span><button class="logout-btn" onclick="logout()">Chiqish</button></div>
-        </div>
-        <div class="main-content">
-            <div class="sidebar">
-                <button class="new-chat-btn" onclick="newChat()">➕ Yangi Chat</button>
-                <div id="chatHistory"></div>
-            </div>
-            <div class="chat-area">
-                <div class="messages" id="messages"></div>
-                <div class="input-area">
-                    <div class="input-container">
-                        <input type="text" id="messageInput" placeholder="Xabar yozing..." onkeypress="if(event.key==='Enter') sendMessage()">
-                        <button class="send-btn" onclick="sendMessage()">Yuborish</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+async function sendMessage() {
+    const msg = input.value.trim();
+    if (!msg) return;
+    addMessage(msg, 'user');
+    input.value = '';
 
-    <script>
-        const API_KEY = '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';
-        let currentUser = null, currentChat = null, chats = [], verificationCode = null, pendingUser = null;
-
-        window.onload = () => {
-            const saved = localStorage.getItem('yusufai_user');
-            if (saved) {currentUser = JSON.parse(saved); loadChats(); showApp();}
-        };
-
-        function showLogin() {
-            document.getElementById('loginPage').classList.remove('hidden');
-            document.getElementById('signupPage').classList.add('hidden');
-            document.getElementById('verifyPage').classList.add('hidden');
-        }
-
-        function showSignup() {
-            document.getElementById('loginPage').classList.add('hidden');
-            document.getElementById('signupPage').classList.remove('hidden');
-        }
-
-        function sendVerification() {
-            const name = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            if (!name || !email) {document.getElementById('signupError').textContent = 'Barcha maydonlarni to\'ldiring'; return;}
-            
-            const users = JSON.parse(localStorage.getItem('yusufai_users') || '[]');
-            if (users.find(u => u.email === email)) {document.getElementById('signupError').textContent = 'Bu email ro\'yxatdan o\'tgan'; return;}
-            
-            verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-            pendingUser = {name, email};
-            alert('Tasdiqlash kodi: ' + verificationCode + '\n\n(Demo rejimida)');
-            
-            document.getElementById('verifyEmail').textContent = email;
-            document.getElementById('signupPage').classList.add('hidden');
-            document.getElementById('verifyPage').classList.remove('hidden');
-        }
-
-        function verifyAndRegister() {
-            const code = document.getElementById('verifyCode').value;
-            const password = document.getElementById('verifyPassword').value;
-            
-            if (code !== verificationCode) {document.getElementById('verifyError').textContent = 'Noto\'g\'ri kod'; return;}
-            if (!password || password.length < 6) {document.getElementById('verifyError').textContent = 'Parol kamida 6 ta belgi'; return;}
-            
-            const users = JSON.parse(localStorage.getItem('yusufai_users') || '[]');
-            currentUser = {id: Date.now(), name: pendingUser.name, email: pendingUser.email, password: btoa(password)};
-            users.push(currentUser);
-            localStorage.setItem('yusufai_users', JSON.stringify(users));
-            localStorage.setItem('yusufai_user', JSON.stringify(currentUser));
-            loadChats(); showApp();
-        }
-
-        function login() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            const users = JSON.parse(localStorage.getItem('yusufai_users') || '[]');
-            const user = users.find(u => u.email === email && u.password === btoa(password));
-            if (!user) {document.getElementById('loginError').textContent = 'Email yoki parol noto\'g\'ri'; return;}
-            currentUser = user;
-            localStorage.setItem('yusufai_user', JSON.stringify(currentUser));
-            loadChats(); showApp();
-        }
-
-        function logout() {localStorage.removeItem('yusufai_user'); location.reload();}
-
-        function showApp() {
-            document.getElementById('loginPage').classList.add('hidden');
-            document.getElementById('signupPage').classList.add('hidden');
-            document.getElementById('verifyPage').classList.add('hidden');
-            document.getElementById('appContainer').style.display = 'flex';
-            document.getElementById('userName').textContent = currentUser.name;
-            newChat();
-        }
-
-        function loadChats() {
-            const saved = localStorage.getItem(`yusufai_chats_${currentUser.id}`);
-            chats = saved ? JSON.parse(saved) : [];
-            renderHistory();
-        }
-
-        function saveChats() {localStorage.setItem(`yusufai_chats_${currentUser.id}`, JSON.stringify(chats));}
-
-        function newChat() {
-            currentChat = {id: Date.now(), title: 'Yangi Suhbat', messages: []};
-            chats.unshift(currentChat);
-            saveChats(); renderHistory(); renderMessages();
-        }
-
-        function selectChat(id) {currentChat = chats.find(c => c.id === id); renderHistory(); renderMessages();}
-
-        function renderHistory() {
-            document.getElementById('chatHistory').innerHTML = chats.map(c => 
-                `<div class="history-item ${c.id === currentChat?.id ? 'active' : ''}" onclick="selectChat(${c.id})">${c.title}</div>`
-            ).join('');
-        }
-
-        function renderMessages() {
-            document.getElementById('messages').innerHTML = currentChat.messages.map(m => 
-                `<div class="message ${m.role}"><div class="message-content">${m.content}</div></div>`
-            ).join('');
-        }
-
-        async function sendMessage() {
-            const input = document.getElementById('messageInput');
-            const msg = input.value.trim();
-            if (!msg || !currentChat) return;
-            
-            currentChat.messages.push({role: 'user', content: msg});
-            if (currentChat.messages.length === 1) currentChat.title = msg.substring(0, 30);
-            input.value = '';
-            renderMessages(); renderHistory();
-            
-            try {
-                const res = await fetch('https://api.openai.com/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}`},
-                    body: JSON.stringify({
-                        model: 'gpt-4',
-                        messages: currentChat.messages.map(m => ({role: m.role === 'ai' ? 'assistant' : m.role, content: m.content}))
-                    })
-                });
-                const data = await res.json();
-                currentChat.messages.push({role: 'ai', content: data.choices[0].message.content});
-                saveChats(); renderMessages();
-            } catch (e) {
-                currentChat.messages.push({role: 'ai', content: '❌ Xatolik'});
-                renderMessages();
-            }
-        }
-    </script>
+    const ai = aiSelect.value;
+    try {
+        const res = await fetch('/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: msg, ai })
+        });
+        const data = await res.json();
+        addMessage(data.reply, 'ai');
+    } catch (err) {
+        addMessage("Server bilan bog'lanishda xatolik yuz berdi", 'ai');
+    }
+}
+</script>
 </body>
 </html>
