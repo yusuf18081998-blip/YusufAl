@@ -4,18 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <!-- SEO Meta Tags -->
     <title>YusufAI - O'zbekiston AI Platformasi | ChatGPT, Claude, Gemini, Groq</title>
     <meta name="description" content="YusufAI - Muhammad Yusuf (13 yosh) tomonidan yaratilgan sun'iy intellekt platformasi. ChatGPT-4, Claude 3.5, Gemini Pro va Groq AI bir joyda. 500+ til, bepul, cheksiz.">
     <meta name="keywords" content="YusufAI, AI Uzbekistan, sun'iy intellekt, ChatGPT o'zbek, AI chatbot, Muhammad Yusuf, Farg'ona, ChatGPT, Claude, Gemini, Groq, artificial intelligence, бесплатный ИИ, искусственный интеллект">
     <meta name="author" content="Muhammad Yusuf">
     <meta name="robots" content="index, follow">
     <meta name="language" content="Uzbek">
+    <meta name="revisit-after" content="7 days">
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yusuf18081998-blip.github.io/YusufAI/">
+    <meta property="og:title" content="YusufAI - O'zbekiston AI Platformasi">
+    <meta property="og:description" content="4 ta eng kuchli AI bir joyda: ChatGPT-4, Claude 3.5, Gemini Pro, Groq. 500+ til, bepul va cheksiz.">
+    <meta property="og:image" content="https://yusuf18081998-blip.github.io/YusufAI/og-image.png">
+    <meta property="og:locale" content="uz_UZ">
     
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yusuf18081998-blip.github.io/YusufAI/">
+    <meta property="twitter:title" content="YusufAI - O'zbekiston AI Platformasi">
+    <meta property="twitter:description" content="4 ta eng kuchli AI bir joyda: ChatGPT-4, Claude 3.5, Gemini Pro, Groq">
+    <meta property="twitter:image" content="https://yusuf18081998-blip.github.io/YusufAI/twitter-image.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://yusuf18081998-blip.github.io/YusufAI/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "YusufAI",
+      "applicationCategory": "AI Platform",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "operatingSystem": "Web Browser",
+      "description": "Universal AI Platform with ChatGPT-4, Claude 3.5, Gemini Pro, and Groq",
+      "author": {
+        "@type": "Person",
+        "name": "Muhammad Yusuf",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Farg'ona",
+          "addressCountry": "UZ"
+        }
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "ratingCount": "1"
+      }
+    }
+    </script>
     
     <style>
         :root {
@@ -55,25 +108,6 @@
             to {opacity: 1; transform: translateY(0);}
         }
         
-        /* LOGO QISMI */
-        .logo-wrapper {
-            margin-bottom: 1rem;
-        }
-
-        .main-robot-icon {
-            font-size: 4rem;
-            color: var(--accent);
-            margin-bottom: 10px;
-            display: block;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-
         .logo {
             font-family: 'Orbitron', sans-serif;
             font-size: clamp(3rem, 8vw, 6rem);
@@ -81,6 +115,7 @@
             background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
             animation: glow 2s ease-in-out infinite alternate;
         }
         
@@ -90,7 +125,7 @@
         }
         
         .tagline {
-            font-size: clamp(1rem, 3vw, 1.5rem);
+            font-size: clamp(1.2rem, 3vw, 2rem);
             font-weight: 300;
             margin-bottom: 2rem;
             color: var(--accent);
@@ -106,8 +141,8 @@
         
         .features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
             margin-bottom: 3rem;
         }
         
@@ -117,24 +152,16 @@
             padding: 2rem;
             border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: 0.3s;
-        }
-
-        .feature:hover {
-            border-color: var(--accent);
-            transform: scale(1.05);
         }
         
         .feature-icon {
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-bottom: 1rem;
-            color: var(--accent);
         }
         
         .feature h3 {
-            color: var(--light);
+            color: var(--accent);
             margin-bottom: 0.5rem;
-            font-size: 1.2rem;
         }
         
         .cta-buttons {
@@ -154,9 +181,7 @@
             font-size: 1.1rem;
             transition: all 0.3s ease;
             box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            display: inline-block;
         }
         
         .cta-button:hover {
@@ -164,9 +189,33 @@
             box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
         }
         
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid var(--primary);
+        }
+        
+        .ai-logos {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+        
+        .ai-logo {
+            font-size: 2.5rem;
+            opacity: 0.8;
+            transition: all 0.3s;
+        }
+        
+        .ai-logo:hover {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+        
         footer {
             text-align: center;
-            padding: 3rem 2rem;
+            padding: 2rem;
             background: rgba(0, 0, 0, 0.3);
             margin-top: 3rem;
         }
@@ -175,66 +224,75 @@
             display: flex;
             justify-content: center;
             gap: 2rem;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
         }
         
         .social-links a {
             color: var(--light);
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             transition: all 0.3s;
+            text-decoration: none;
         }
         
         .social-links a:hover {
             color: var(--accent);
-            transform: rotate(15deg) scale(1.2);
+            transform: translateY(-5px);
+        }
+        
+        @media (max-width: 768px) {
+            .features {grid-template-columns: 1fr;}
+            .cta-buttons {flex-direction: column;}
         }
     </style>
 </head>
 <body>
     <main class="hero">
         <div class="hero-content">
-            <div class="logo-wrapper">
-                <i class="fas fa-robot main-robot-icon"></i>
-                <h1 class="logo">YusufAI</h1>
-            </div>
-            <p class="tagline">⚡ UNIVERSAL AI PLATFORM ⚡</p>
+            <h1 class="logo">YusufAI</h1>
+            <p class="tagline">⚡ Universal AI Platform ⚡</p>
             
             <p class="description">
                 <strong>4 ta eng kuchli sun'iy intellekt bir joyda!</strong><br>
                 ChatGPT-4, Claude 3.5, Gemini Pro va Groq (Llama 3.3)<br>
+                500+ tilda gaplashadi | Bepul va cheksiz<br>
                 <em>Muhammad Yusuf (13 yosh) tomonidan yaratilgan 🇺🇿</em>
             </p>
             
             <div class="features">
                 <article class="feature">
-                    <i class="fas fa-brain feature-icon"></i>
+                    <div class="feature-icon">🤖</div>
                     <h3>ChatGPT-4</h3>
-                    <p>OpenAI texnologiyasi</p>
+                    <p>OpenAI ning eng kuchli modeli</p>
                 </article>
                 
                 <article class="feature">
-                    <i class="fas fa-microchip feature-icon"></i>
+                    <div class="feature-icon">🎭</div>
                     <h3>Claude 3.5</h3>
-                    <p>Kreativ fikrlash</p>
+                    <p>Anthropic ning kreativ AI'i</p>
                 </article>
                 
                 <article class="feature">
-                    <i class="fas fa-gem feature-icon"></i>
+                    <div class="feature-icon">💎</div>
                     <h3>Gemini Pro</h3>
-                    <p>Google innovatsiyasi</p>
+                    <p>Google ning zamonaviy AI'i</p>
                 </article>
                 
                 <article class="feature">
-                    <i class="fas fa-bolt feature-icon"></i>
-                    <h3>Groq AI</h3>
-                    <p>Eng yuqori tezlik</p>
+                    <div class="feature-icon">⚡</div>
+                    <h3>Groq (Llama)</h3>
+                    <p>Meta ning tez AI modeli</p>
                 </article>
             </div>
             
             <div class="cta-buttons">
-                <a href="Demo.html" class="cta-button">
-                    <i class="fas fa-rocket"></i> Platformani Sinab Ko'ring
-                </a>
+                <a href="demo.html" class="cta-button">🚀 Platformani Sinab Ko'ring</a>
+            </div>
+            
+            <div class="ai-logos" aria-label="Supported AI platforms">
+                <span class="ai-logo" title="ChatGPT-4">🤖</span>
+                <span class="ai-logo" title="Claude 3.5">🎭</span>
+                <span class="ai-logo" title="Gemini Pro">💎</span>
+                <span class="ai-logo" title="Groq Llama">⚡</span>
             </div>
         </div>
     </main>
@@ -243,8 +301,8 @@
         <p>&copy; 2026 YusufAI Platform | Muhammad Yusuf</p>
         <p style="margin-top: 0.5rem; opacity: 0.7;">Farg'ona, O'zbekiston 🇺🇿</p>
         <div class="social-links">
-            <a href="https://instagram.com/khujayev._" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
-            <a href="https://github.com/yusuf18081998-blip" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+            <a href="https://instagram.com/khujayev._" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">📸</a>
+            <a href="https://github.com/yusuf18081998-blip" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">💻</a>
         </div>
     </footer>
 </body>
