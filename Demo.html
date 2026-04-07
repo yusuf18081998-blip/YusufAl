@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YusufAI Demo - 4 AI Platform</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {margin: 0; padding: 0; box-sizing: border-box;}
@@ -88,10 +89,10 @@
                     <p>🌍 500+ til | 💬 Bepul va cheksiz</p>
                     <p>🚀 Muhammad Yusuf (13) tomonidan yaratilgan</p>
                     <div class="suggestions">
-                        <div class="suggestion" onclick="askQuestion('Python o\'rganish')">💻 Python</div>
-                        <div class="suggestion" onclick="askQuestion('O\'zbekiston haqida')">🇺🇿 O'zbekiston</div>
-                        <div class="suggestion" onclick="askQuestion('Matematika')">🔢 Matematika</div>
-                        <div class="suggestion" onclick="askQuestion('She\'r yoz')">✍️ She'r</div>
+                        <div class="suggestion" onclick="askQuestion('Salom! Yordam kerakmi?')">👋 Salom</div>
+                        <div class="suggestion" onclick="askQuestion('Python dasturlashni o\\'rgatasan?')">💻 Python</div>
+                        <div class="suggestion" onclick="askQuestion('O\\'zbekiston haqida ma\\'lumot ber')">🇺🇿 O'zbekiston</div>
+                        <div class="suggestion" onclick="askQuestion('2+2*2 nechiga teng?')">🔢 Matematika</div>
                     </div>
                 </div>
             </div>
@@ -107,15 +108,46 @@
         const AI_NAMES = {gpt4: 'ChatGPT-4', claude: 'Claude 3.5', gemini: 'Gemini Pro', groq: 'Groq (Llama 3.3)'};
         let currentAI = 'gpt4', currentChat = null, chats = JSON.parse(localStorage.getItem('yusufai_demo') || '[]');
 
-        const RESPONSES = {
-            prog: "Dasturlash bo'yicha yordam:\n\n🐍 Python - Boshlovchilar uchun\n💻 JavaScript - Web\n☕ Java - Enterprise\n⚙️ C++ - Tezlik\n\nQaysi tilni o'rganmoqchisiz?",
-            uz: "🇺🇿 O'zbekiston\n\n📍 Markaziy Osiyo\n🏛️ Toshkent - poytaxt\n👥 36M+ aholi\n🕌 Samarqand, Buxoro, Xiva\n\nNimani bilishni xohlaysiz?",
-            math: "🔢 Matematika\n\n📐 Algebra\n📊 Geometriya\n📈 Analiz\n📉 Statistika\n\nQanday masala?",
-            hist: "📚 Tarix\n\n🏛️ Qadim dunyo\n🕌 O'rta asrlar\n🌍 Zamonaviy\n\nQaysi davr?",
-            geo: "🌍 Geografiya\n\n🌏 7 Qit'a\n🌊 5 Okean\n🏔️ Tog'lar\n🏜️ Cho'llar\n\nQaysi joy?",
-            art: "🎨 San'at\n\n🖼️ Rasm\n🎼 Musiqa\n📚 Adabiyot\n🎭 Teatr\n\nQaysi turi?",
-            sport: "⚽ Sport\n\n⚽ Futbol\n🏀 Basketball\n🎾 Tennis\n🏊 Suzish\n\nQaysi sport?",
-            food: "🍕 Ovqat\n\n🍛 O'zbek\n🍕 Italiya\n🍣 Yaponiya\n🌮 Meksika\n\nQaysi oshxona?"
+        const KNOWLEDGE = {
+            greetings: {
+                uz: ["Assalomu alaykum! Men {AI} - sizning AI yordamchingizman. Nimani bilishni xohlaysiz?",
+                     "Salom! Men {AI}. Sizga qanday yordam bera olaman?",
+                     "Xush kelibsiz! Men {AI} - 500+ tilda gaplashaman. Savolingiz bormi?"],
+                ru: ["Здравствуйте! Я {AI}. Чем могу помочь?", "Привет! Я {AI}. Готов ответить на ваши вопросы!"],
+                en: ["Hello! I'm {AI}. How can I help you today?", "Hi! I'm {AI}. What would you like to know?"]
+            },
+            
+            programming: [
+                "🐍 **Python** - eng mashhur dasturlash tili!\n\nNega Python?\n✅ Oson o'rganiladi\n✅ Ko'p kutubxonalar\n✅ AI/ML uchun\n✅ Web development\n\nBoshlash uchun:\n```python\nprint('Salom Dunyo!')\n```\n\nKo'proq bilishni xohlaysizmi?",
+                
+                "💻 **Dasturlash bo'yicha maslahat**\n\nEng yaxshi tillar:\n\n1️⃣ **Python** - AI, Data Science\n2️⃣ **JavaScript** - Web development\n3️⃣ **Java** - Android, Enterprise\n4️⃣ **C++** - Game development\n\nQaysi yo'nalishni tanlaysiz?",
+                
+                "🔥 **Dasturlash boshlash**\n\nQadamlar:\n1. Til tanlang (Python tavsiya)\n2. Online kurslar (YouTube, Udemy)\n3. Har kun mashq qiling\n4. Loyihalar yarating\n5. GitHub'da kod joylang\n\nMen har qadamda yordam beraman!"
+            ],
+            
+            uzbekistan: [
+                "🇺🇿 **O'zbekiston - Buyuk Tarix va Madaniyat**\n\n📍 Joylashuv: Markaziy Osiyo\n🏛️ Poytaxt: Toshkent (3M+ aholi)\n👥 Aholi: 36 million+\n🗣️ Til: O'zbek, Rus\n\n**Qadimiy shaharlar:**\n🕌 Samarqand - Registon maydoni\n📚 Buxoro - 140+ yodgorlik\n🏺 Xiva - Ichan Qal'a\n🌆 Farg'ona - Go'zal vodiy\n\nNimani bilmoqchisiz?",
+                
+                "🇺🇿 **O'zbekiston Tarixi**\n\nMuhim davr tamg'alari:\n\n🏛️ **Somoniylar** (IX-X asr)\n⚔️ **Amir Temur** (XIV asr)\n🕌 **Ulug'bek** - Astronom\n📚 **Alisher Navoiy** - Shoir\n\nZamonaviy:\n🎓 100+ universitet\n🏭 Sanoat rivojlanmoqda\n🌾 Paxtachilik, meva\n\nQaysi davr qiziqtiradi?",
+                
+                "🇺🇿 **O'zbekiston Bugungi Kunda**\n\nYutiqlar:\n✅ IT soha o'sishi\n✅ Turizm rivojlanishi\n✅ Ta'lim islohoti\n✅ Investitsiyalar\n\nMashhur joylar:\n🕌 Registon - Samarqand\n🏛️ Sha-i Zinda\n🏺 Ark qal'asi - Buxoro\n\nBormoqchimisiz?"
+            ],
+            
+            math: [
+                "🔢 **Matematika - Ilmlar Qirolichasi!**\n\nBo'limlar:\n\n📐 **Algebra** - Tenglamalar, funksiyalar\n📊 **Geometriya** - Shakllar, yuzalar\n📈 **Analiz** - Limit, hosila\n📉 **Statistika** - Ma'lumotlar tahlili\n\nMasalan:\n2 + 2 × 2 = ?\nJavob: 6 (avval ko'paytirish!)\n\nQanday masala yechamiz?",
+                
+                "🧮 **Matematika Qoidalari**\n\nAmallar tartibi:\n1️⃣ Qavslar ()\n2️⃣ Daraja ^\n3️⃣ Ko'paytirish, bo'lish ×÷\n4️⃣ Qo'shish, ayirish +-\n\nMisol:\n(3 + 2) × 4 = 5 × 4 = 20 ✅\n3 + 2 × 4 = 3 + 8 = 11 ✅\n\nSavol bering!",
+                
+                "📊 **Matematikada Yordam**\n\nMen yordam bera olaman:\n\n✅ Tenglamalar yechish\n✅ Geometriya masalalari\n✅ Grafik chizish\n✅ Statistika hisoblash\n✅ Formulalar tushuntirish\n\nMasala yuboring!"
+            ],
+            
+            default: [
+                "Bu qiziqarli savol! Men {AI} sifatida sizga to'liq javob berishga tayyorman. Iltimos, savolingizni batafsil yozing.",
+                "Yaxshi tanlov! {AI} bu mavzuda sizga yordam bera oladi. Ko'proq ma'lumot bering.",
+                "Ajoyib! Men bu haqda ko'p narsa aytib bera olaman. Aniqroq savol berishingiz mumkin.",
+                "Sizga yordam berishdan xursandman! {AI} sifatida men bu mavzuni yaxshi bilaman. Davom eting!",
+                "Bu mavzu menga tanish. Men {AI} - 500+ tilda gaplashaman va ko'p mavzularda yordam beraman. Nimani bilmoqchisiz?"
+            ]
         };
 
         function selectAI(ai) {
@@ -126,7 +158,7 @@
         }
 
         function newChat() {
-            currentChat = {id: Date.now(), ai: currentAI, title: 'Yangi', messages: []};
+            currentChat = {id: Date.now(), ai: currentAI, title: 'Yangi Suhbat', messages: [], responseIndex: 0};
             chats.unshift(currentChat);
             save();
             renderHistory();
@@ -156,12 +188,12 @@
         function renderMessages() {
             if (!currentChat || !currentChat.messages.length) {
                 document.getElementById('messages').innerHTML = 
-                    `<div class="welcome"><h2>YusufAI</h2><p>✨ 4 ta AI | 🌍 500+ til | 💬 Bepul</p><p>🚀 Muhammad Yusuf (13)</p>
+                    `<div class="welcome"><h2>YusufAI - Universal Platform</h2><p>✨ 4 ta AI | 🌍 500+ til | 💬 Bepul</p><p>🚀 Muhammad Yusuf (13)</p>
                     <div class="suggestions">
-                        <div class="suggestion" onclick="askQuestion('Python')">💻 Python</div>
-                        <div class="suggestion" onclick="askQuestion('O\\'zbekiston')">🇺🇿 O'zbekiston</div>
-                        <div class="suggestion" onclick="askQuestion('Matematika')">🔢 Math</div>
-                        <div class="suggestion" onclick="askQuestion('She\\'r')">✍️ She'r</div>
+                        <div class="suggestion" onclick="askQuestion('Salom! Yordam kerakmi?')">👋 Salom</div>
+                        <div class="suggestion" onclick="askQuestion('Python dasturlashni o\\'rgatasan?')">💻 Python</div>
+                        <div class="suggestion" onclick="askQuestion('O\\'zbekiston haqida')">🇺🇿 O'zbekiston</div>
+                        <div class="suggestion" onclick="askQuestion('2+2*2 nechiga teng?')">🔢 Matematika</div>
                     </div></div>`;
                 return;
             }
@@ -175,18 +207,60 @@
             document.getElementById('messages').scrollTop = 999999;
         }
 
+        function detectLanguage(text) {
+            if (/[а-яА-Я]/.test(text) && !/[а-яА-ЯўғҚқҲҳ]/.test(text)) return 'ru';
+            if (/^[a-zA-Z\s\?\!\.]+$/.test(text)) return 'en';
+            return 'uz';
+        }
+
         function getResponse(msg) {
+            if (!currentChat.responseIndex) currentChat.responseIndex = 0;
+            
             const m = msg.toLowerCase();
-            if (/salom|hello|hi|привет/.test(m)) return `Assalomu alaykum! Men ${AI_NAMES[currentAI]} - 500+ tilda gaplashaman. Nimani bilishni xohlaysiz?`;
-            if (/dastur|program|python|javascript/.test(m)) return RESPONSES.prog;
-            if (/o'zbek|uzbek|toshkent/.test(m)) return RESPONSES.uz;
-            if (/matematik|hisob/.test(m)) return RESPONSES.math;
-            if (/tarix|history/.test(m)) return RESPONSES.hist;
-            if (/geografiya|mamlakat/.test(m)) return RESPONSES.geo;
-            if (/san'at|rasm|musiqa/.test(m)) return RESPONSES.art;
-            if (/sport|futbol/.test(m)) return RESPONSES.sport;
-            if (/ovqat|taom|osh/.test(m)) return RESPONSES.food;
-            return `Bu qiziqarli savol! Men ${AI_NAMES[currentAI]} sifatida sizga quyidagilarda yordam bera olaman:\n\n💻 Dasturlash\n🌍 Geografiya\n📚 Tarix\n🔢 Matematika\n🎨 San'at\n⚽ Sport\n\nSavolingizni yozing!`;
+            const lang = detectLanguage(msg);
+            
+            // Greetings
+            if (/salom|hello|hi|привет|assalomu|xush/.test(m)) {
+                const greetings = KNOWLEDGE.greetings[lang] || KNOWLEDGE.greetings.uz;
+                const greeting = greetings[currentChat.responseIndex % greetings.length];
+                currentChat.responseIndex++;
+                return greeting.replace('{AI}', AI_NAMES[currentAI]);
+            }
+            
+            // Programming
+            if (/dastur|program|python|javascript|kod|code/.test(m)) {
+                const response = KNOWLEDGE.programming[currentChat.responseIndex % KNOWLEDGE.programming.length];
+                currentChat.responseIndex++;
+                return response;
+            }
+            
+            // Uzbekistan
+            if (/o'zbek|uzbek|toshkent|samarqand|buxoro|farg'ona/.test(m)) {
+                const response = KNOWLEDGE.uzbekistan[currentChat.responseIndex % KNOWLEDGE.uzbekistan.length];
+                currentChat.responseIndex++;
+                return response;
+            }
+            
+            // Math
+            if (/matematik|hisob|masala|tengla|\d+[\+\-\*\/]\d+/.test(m)) {
+                // Simple calculator
+                const match = m.match(/(\d+)\s*[\+\-\*\/]\s*(\d+)/);
+                if (match) {
+                    try {
+                        const result = eval(match[0]);
+                        return `🔢 **Hisoblash:**\n\n${match[0]} = **${result}**\n\nBoshqa masala bormi?`;
+                    } catch(e) {}
+                }
+                const response = KNOWLEDGE.math[currentChat.responseIndex % KNOWLEDGE.math.length];
+                currentChat.responseIndex++;
+                return response;
+            }
+            
+            // Default
+            const defaults = KNOWLEDGE.default;
+            const response = defaults[currentChat.responseIndex % defaults.length];
+            currentChat.responseIndex++;
+            return response.replace('{AI}', AI_NAMES[currentAI]) + "\n\n💡 **Men yordam bera olaman:**\n💻 Dasturlash\n🇺🇿 O'zbekiston\n🔢 Matematika\n📚 Ta'lim\n🌍 Geografiya\n\nSavolingizni yozing!";
         }
 
         function askQuestion(q) {
@@ -214,7 +288,7 @@
             document.getElementById('messages').appendChild(typing);
             document.getElementById('messages').scrollTop = 999999;
 
-            await new Promise(r => setTimeout(r, 1000 + Math.random() * 1000));
+            await new Promise(r => setTimeout(r, 800 + Math.random() * 1200));
             typing.remove();
 
             currentChat.messages.push({role: 'ai', content: getResponse(msg)});
