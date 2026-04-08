@@ -3,307 +3,773 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO Meta Tags -->
+
     <title>YusufAI - O'zbekiston AI Platformasi | ChatGPT, Claude, Gemini, Groq</title>
     <meta name="description" content="YusufAI - Muhammad Yusuf (13 yosh) tomonidan yaratilgan sun'iy intellekt platformasi. ChatGPT-4, Claude 3.5, Gemini Pro va Groq AI bir joyda. 500+ til, bepul, cheksiz.">
-    <meta name="keywords" content="YusufAI, AI Uzbekistan, sun'iy intellekt, ChatGPT o'zbek, AI chatbot, Muhammad Yusuf, Farg'ona, ChatGPT, Claude, Gemini, Groq, artificial intelligence, бесплатный ИИ, искусственный интеллект">
+    <meta name="keywords" content="YusufAI, AI Uzbekistan, sun'iy intellekt, ChatGPT o'zbek, AI chatbot, Muhammad Yusuf, Farg'ona, ChatGPT, Claude, Gemini, Groq">
     <meta name="author" content="Muhammad Yusuf">
     <meta name="robots" content="index, follow">
-    <meta name="language" content="Uzbek">
-    <meta name="revisit-after" content="7 days">
-    
-    <!-- Open Graph / Facebook -->
+
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://yusuf18081998-blip.github.io/YusufAI/">
     <meta property="og:title" content="YusufAI - O'zbekiston AI Platformasi">
     <meta property="og:description" content="4 ta eng kuchli AI bir joyda: ChatGPT-4, Claude 3.5, Gemini Pro, Groq. 500+ til, bepul va cheksiz.">
-    <meta property="og:image" content="https://yusuf18081998-blip.github.io/YusufAI/og-image.png">
-    <meta property="og:locale" content="uz_UZ">
-    
-    <!-- Twitter -->
+
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://yusuf18081998-blip.github.io/YusufAI/">
     <meta property="twitter:title" content="YusufAI - O'zbekiston AI Platformasi">
     <meta property="twitter:description" content="4 ta eng kuchli AI bir joyda: ChatGPT-4, Claude 3.5, Gemini Pro, Groq">
-    <meta property="twitter:image" content="https://yusuf18081998-blip.github.io/YusufAI/twitter-image.png">
-    
-    <!-- Canonical URL -->
+
     <link rel="canonical" href="https://yusuf18081998-blip.github.io/YusufAI/">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Schema.org JSON-LD -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
+
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "YusufAI",
       "applicationCategory": "AI Platform",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "operatingSystem": "Web Browser",
       "description": "Universal AI Platform with ChatGPT-4, Claude 3.5, Gemini Pro, and Groq",
       "author": {
         "@type": "Person",
         "name": "Muhammad Yusuf",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Farg'ona",
-          "addressCountry": "UZ"
-        }
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5",
-        "ratingCount": "1"
+        "address": { "@type": "PostalAddress", "addressLocality": "Farg'ona", "addressCountry": "UZ" }
       }
     }
     </script>
-    
+
     <style>
         :root {
-            --primary: #667eea;
-            --secondary: #764ba2;
-            --accent: #f093fb;
-            --dark: #1a1a2e;
-            --light: #f8f9fa;
+            --bg: #0a0a0c;
+            --surface: #111115;
+            --surface2: #18181e;
+            --border: rgba(255,255,255,0.06);
+            --border2: rgba(255,255,255,0.11);
+            --text: #e8e8f0;
+            --muted: #5a5a72;
+            --accent: #7c6af7;
+            --accent2: #a78bfa;
+            --glow: rgba(124, 106, 247, 0.3);
         }
-        
-        * {margin: 0; padding: 0; box-sizing: border-box;}
-        
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, var(--dark) 0%, #16213e 100%);
-            color: var(--light);
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--text);
             overflow-x: hidden;
+            line-height: 1.6;
         }
-        
+
+        /* NOISE TEXTURE */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* AMBIENT GLOW */
+        .ambient {
+            position: fixed;
+            width: 600px; height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ambient-1 {
+            top: -200px; left: -200px;
+            background: rgba(124, 106, 247, 0.08);
+        }
+
+        .ambient-2 {
+            bottom: -200px; right: -200px;
+            background: rgba(167, 139, 250, 0.06);
+        }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 18px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            background: rgba(10, 10, 12, 0.85);
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-logo {
+            font-family: 'Space Mono', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 12px var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 12px var(--accent); }
+            50% { opacity: 0.5; box-shadow: 0 0 4px var(--accent); }
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-link {
+            font-size: 14px;
+            color: var(--muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover { color: var(--text); }
+
+        .nav-cta {
+            padding: 9px 22px;
+            background: var(--accent);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .nav-cta:hover {
+            background: var(--accent2);
+            transform: translateY(-1px);
+        }
+
+        /* HERO */
         .hero {
+            position: relative;
+            z-index: 1;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 2rem;
+            padding: 120px 24px 80px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 16px;
+            background: rgba(124, 106, 247, 0.1);
+            border: 1px solid rgba(124, 106, 247, 0.25);
+            border-radius: 20px;
+            font-size: 12.5px;
+            color: var(--accent2);
+            font-weight: 500;
+            margin-bottom: 32px;
+            font-family: 'Space Mono', monospace;
+            animation: fadeUp 0.6s ease-out both;
+        }
+
+        .hero-badge-dot {
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--accent2);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-title {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(52px, 10vw, 96px);
+            font-weight: 700;
+            letter-spacing: -3px;
+            line-height: 0.95;
+            margin-bottom: 28px;
+            animation: fadeUp 0.7s 0.1s ease-out both;
+        }
+
+        .hero-title .highlight {
+            color: var(--accent2);
             position: relative;
         }
-        
-        .hero-content {
-            max-width: 900px;
-            animation: fadeInUp 1s ease-out;
+
+        .hero-title .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            border-radius: 2px;
         }
-        
-        @keyframes fadeInUp {
-            from {opacity: 0; transform: translateY(30px);}
-            to {opacity: 1; transform: translateY(0);}
+
+        .hero-sub {
+            font-size: 18px;
+            color: var(--muted);
+            max-width: 520px;
+            margin: 0 auto 48px;
+            line-height: 1.75;
+            animation: fadeUp 0.7s 0.2s ease-out both;
         }
-        
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-        
-        @keyframes glow {
-            from {filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.5));}
-            to {filter: drop-shadow(0 0 40px var(--primary));}
-        }
-        
-        .tagline {
-            font-size: clamp(1.2rem, 3vw, 2rem);
-            font-weight: 300;
-            margin-bottom: 2rem;
-            color: var(--accent);
-            letter-spacing: 2px;
-        }
-        
-        .description {
-            font-size: 1.1rem;
-            margin-bottom: 3rem;
-            opacity: 0.9;
-            line-height: 1.8;
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-        
-        .feature {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        .feature h3 {
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
-        
-        .cta-buttons {
+
+        .hero-sub strong { color: var(--text); }
+
+        .hero-actions {
             display: flex;
-            gap: 1rem;
+            gap: 12px;
             justify-content: center;
             flex-wrap: wrap;
+            animation: fadeUp 0.7s 0.3s ease-out both;
         }
-        
-        .cta-button {
-            padding: 1.2rem 3rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
+
+        .btn-primary {
+            padding: 14px 32px;
+            background: var(--accent);
+            color: #fff;
             text-decoration: none;
-            border-radius: 50px;
+            border-radius: 10px;
+            font-size: 15px;
             font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-            display: inline-block;
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        
-        .cta-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+
+        .btn-primary:hover {
+            background: var(--accent2);
+            transform: translateY(-3px);
+            box-shadow: 0 16px 40px var(--glow);
         }
-        
-        .cta-button.secondary {
+
+        .btn-outline {
+            padding: 14px 28px;
             background: transparent;
-            border: 2px solid var(--primary);
-        }
-        
-        .ai-logos {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-            margin-top: 3rem;
-        }
-        
-        .ai-logo {
-            font-size: 2.5rem;
-            opacity: 0.8;
-            transition: all 0.3s;
-        }
-        
-        .ai-logo:hover {
-            opacity: 1;
-            transform: scale(1.2);
-        }
-        
-        footer {
-            text-align: center;
-            padding: 2rem;
-            background: rgba(0, 0, 0, 0.3);
-            margin-top: 3rem;
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 1rem;
-        }
-        
-        .social-links a {
-            color: var(--light);
-            font-size: 1.5rem;
-            transition: all 0.3s;
+            color: var(--text);
             text-decoration: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 500;
+            border: 1px solid var(--border2);
+            transition: all 0.25s;
         }
-        
-        .social-links a:hover {
-            color: var(--accent);
-            transform: translateY(-5px);
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent2);
+            background: rgba(124, 106, 247, 0.07);
         }
-        
+
+        /* STATS */
+        .stats-row {
+            display: flex;
+            gap: 48px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 72px;
+            animation: fadeUp 0.7s 0.4s ease-out both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* CARDS */
+        .section {
+            position: relative;
+            z-index: 1;
+            padding: 100px 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-tag {
+            display: inline-block;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent2);
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .section-desc {
+            font-size: 16px;
+            color: var(--muted);
+            max-width: 500px;
+            margin-bottom: 56px;
+            line-height: 1.7;
+        }
+
+        .ai-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .ai-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px 24px;
+            transition: all 0.3s;
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--card-color, var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .ai-card:hover {
+            border-color: var(--border2);
+            transform: translateY(-4px);
+            background: var(--surface2);
+        }
+
+        .ai-card:hover::before { opacity: 1; }
+
+        .card-icon {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .card-name {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        .card-by {
+            font-size: 12px;
+            color: var(--muted);
+            font-family: 'Space Mono', monospace;
+            margin-bottom: 14px;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.65;
+        }
+
+        /* FEATURES */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+            transition: all 0.25s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--border2);
+            background: var(--surface2);
+        }
+
+        .feature-icon-wrap {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            background: rgba(124, 106, 247, 0.1);
+            border: 1px solid rgba(124, 106, 247, 0.2);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .feature-icon {
+            width: 18px; height: 18px;
+            color: var(--accent2);
+        }
+
+        .feature-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .feature-desc {
+            font-size: 13.5px;
+            color: var(--muted);
+            line-height: 1.65;
+        }
+
+        /* DIVIDER */
+        .divider {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 1px;
+            background: var(--border);
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* CTA SECTION */
+        .cta-section {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 100px 24px;
+        }
+
+        .cta-box {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 24px;
+            padding: 56px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(124, 106, 247, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta-title {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(24px, 4vw, 36px);
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 14px;
+        }
+
+        .cta-desc {
+            font-size: 15px;
+            color: var(--muted);
+            margin-bottom: 32px;
+            line-height: 1.7;
+        }
+
+        /* FOOTER */
+        footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid var(--border);
+            padding: 36px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: gap;
+        }
+
+        .footer-left {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .footer-logo {
+            font-family: 'Space Mono', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-copy {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .footer-link {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover { color: var(--text); }
+
         @media (max-width: 768px) {
-            .features {grid-template-columns: 1fr;}
-            .cta-buttons {flex-direction: column;}
+            nav { padding: 14px 20px; }
+            .nav-links { display: none; }
+            .hero { padding: 100px 20px 60px; }
+            .stats-row { gap: 28px; }
+            .section { padding: 70px 20px; }
+            footer { flex-direction: column; gap: 20px; text-align: center; padding: 28px 20px; }
+            .cta-box { padding: 40px 24px; }
         }
     </style>
 </head>
 <body>
-    <main class="hero">
-        <div class="hero-content">
-            <h1 class="logo">YusufAI</h1>
-            <p class="tagline">⚡ Universal AI Platform ⚡</p>
-            
-            <p class="description">
-                <strong>4 ta eng kuchli sun'iy intellekt bir joyda!</strong><br>
-                ChatGPT-4, Claude 3.5, Gemini Pro va Groq (Llama 3.3)<br>
-                500+ tilda gaplashadi | Bepul va cheksiz<br>
-                <em>Muhammad Yusuf (13 yosh) tomonidan yaratilgan 🇺🇿</em>
+
+<div class="ambient ambient-1"></div>
+<div class="ambient ambient-2"></div>
+
+<nav>
+    <div class="nav-logo">
+        <div class="nav-dot"></div>
+        YusufAI
+    </div>
+    <div class="nav-links">
+        <a href="#models" class="nav-link">Modellar</a>
+        <a href="#features" class="nav-link">Xususiyatlar</a>
+        <a href="https://github.com/yusuf18081998-blip" target="_blank" rel="noopener" class="nav-link">GitHub</a>
+        <a href="Demo.html" class="nav-cta">Sinab ko'rish &rarr;</a>
+    </div>
+</nav>
+
+<main>
+    <section class="hero">
+        <div class="hero-badge">
+            <div class="hero-badge-dot"></div>
+            Muhammad Yusuf (13) &mdash; Farg'ona, O'zbekiston
+        </div>
+
+        <h1 class="hero-title">
+            Yusuf<span class="highlight">AI</span>
+        </h1>
+
+        <p class="hero-sub">
+            <strong>4 ta eng kuchli sun'iy intellekt</strong> bir joyda.<br>
+            ChatGPT&#8209;4, Claude 3.5, Gemini Pro, Groq &mdash; bepul va cheksiz.
+        </p>
+
+        <div class="hero-actions">
+            <a href="Demo.html" class="btn-primary">
+                Platformani ochish &rarr;
+            </a>
+            <a href="#models" class="btn-outline">Modellar haqida</a>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat">
+                <div class="stat-num">4</div>
+                <div class="stat-label">AI modeli</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">500+</div>
+                <div class="stat-label">Tillar</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">0</div>
+                <div class="stat-label">Narx (bepul)</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">13</div>
+                <div class="stat-label">Yaratuvchi yoshi</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section" id="models">
+        <div class="section-tag">AI Modellar</div>
+        <h2 class="section-title">4 ta kuchli model</h2>
+        <p class="section-desc">Har bir model o'ziga xos qobiliyatga ega. Vazifangizga mos modelni tanlang.</p>
+
+        <div class="ai-grid">
+            <div class="ai-card" style="--card-color: #e8734a">
+                <div class="card-icon" style="background: rgba(232,115,74,0.12); color: #e8734a">CL</div>
+                <div class="card-name">Claude 3.5 Sonnet</div>
+                <div class="card-by">by Anthropic</div>
+                <div class="card-desc">Kreativ yozuv, chuqur tahlil va uzun matnlar uchun eng yaxshi tanlov.</div>
+            </div>
+
+            <div class="ai-card" style="--card-color: #10a37f">
+                <div class="card-icon" style="background: rgba(16,163,127,0.12); color: #10a37f">GP</div>
+                <div class="card-name">ChatGPT-4</div>
+                <div class="card-by">by OpenAI</div>
+                <div class="card-desc">Keng bilim bazasi, mantiqiy fikrlash va vazifalarni hal etishda ustun.</div>
+            </div>
+
+            <div class="ai-card" style="--card-color: #4285f4">
+                <div class="card-icon" style="background: rgba(66,133,244,0.12); color: #4285f4">GM</div>
+                <div class="card-name">Gemini Pro</div>
+                <div class="card-by">by Google</div>
+                <div class="card-desc">Ko'p modal qobiliyat, tezlik va Google ekotizimi bilan integratsiya.</div>
+            </div>
+
+            <div class="ai-card" style="--card-color: #f55036">
+                <div class="card-icon" style="background: rgba(245,80,54,0.12); color: #f55036">GQ</div>
+                <div class="card-name">Groq (Llama 3.3)</div>
+                <div class="card-by">by Meta &times; Groq</div>
+                <div class="card-desc">Ochiq manba, eng tez javob tezligi, texnik va kod masalalarida kuchli.</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section" id="features">
+        <div class="section-tag">Xususiyatlar</div>
+        <h2 class="section-title">Nima uchun YusufAI?</h2>
+        <p class="section-desc">Oddiy va kuchli — hamma narsa bir joyda.</p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon-wrap">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1M3 12h1m16 0h1M5.64 5.64l.71.71M17.66 17.66l.71.71M5.64 18.36l.71-.71M17.66 6.34l.71-.71"/>
+                        <circle cx="12" cy="12" r="4"/>
+                    </svg>
+                </div>
+                <div class="feature-title">Haqiqiy AI javoblari</div>
+                <div class="feature-desc">Har bir savol uchun turli, original javoblar — hardcoded emas, haqiqiy AI bilan ishlaydi.</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-wrap">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                </div>
+                <div class="feature-title">Suhbat tarixi</div>
+                <div class="feature-desc">Barcha suhbatlar brauzeringizda saqlanadi. Istalgan vaqt davom ettiring.</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-wrap">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/>
+                    </svg>
+                </div>
+                <div class="feature-title">500+ til</div>
+                <div class="feature-desc">O'zbek, rus, ingliz va boshqa 500 dan ortiq tilda muloqot qiling.</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-wrap">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <div class="feature-title">Tez va bepul</div>
+                <div class="feature-desc">Ro'yxatdan o'tish shart emas. Bosing va darhol foydalaning. Butunlay bepul.</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-wrap">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <div class="feature-title">Dasturlash yordami</div>
+                <div class="feature-desc">Python, JavaScript, kod yozish, xato topish va tushuntirish — hammasi shu yerda.</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-wrap">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                    </svg>
+                </div>
+                <div class="feature-title">O'zbek tilida</div>
+                <div class="feature-desc">O'zbekiston yoshlari uchun yaratilgan — ona tilimizda to'liq qo'llab-quvvatlash.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="cta-box">
+            <h2 class="cta-title">Hoziroq sinab ko'ring</h2>
+            <p class="cta-desc">
+                Ro'yxatdan o'tish shart emas. To'g'ridan-to'g'ri savol bering
+                va haqiqiy AI javobini oling.
             </p>
-            
-            <div class="features">
-                <article class="feature">
-                    <div class="feature-icon">🤖</div>
-                    <h3>ChatGPT-4</h3>
-                    <p>OpenAI ning eng kuchli modeli</p>
-                </article>
-                
-                <article class="feature">
-                    <div class="feature-icon">🎭</div>
-                    <h3>Claude 3.5</h3>
-                    <p>Anthropic ning kreativ AI'i</p>
-                </article>
-                
-                <article class="feature">
-                    <div class="feature-icon">💎</div>
-                    <h3>Gemini Pro</h3>
-                    <p>Google ning zamonaviy AI'i</p>
-                </article>
-                
-                <article class="feature">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Groq (Llama)</h3>
-                    <p>Meta ning tez AI modeli</p>
-                </article>
-            </div>
-            
-            <div class="cta-buttons">
-                <a href="Demo.html" class="cta-button">🚀 Platformani Sinab Ko'ring</a>
-            </div>
-            
-            <div class="ai-logos" aria-label="Supported AI platforms">
-                <span class="ai-logo" title="ChatGPT-4">🤖</span>
-                <span class="ai-logo" title="Claude 3.5">🎭</span>
-                <span class="ai-logo" title="Gemini Pro">💎</span>
-                <span class="ai-logo" title="Groq Llama">⚡</span>
-            </div>
+            <a href="Demo.html" class="btn-primary" style="font-size:16px; padding: 15px 36px;">
+                Platformani ochish &rarr;
+            </a>
         </div>
-    </main>
-    
-    <footer>
-        <p>&copy; 2026 YusufAI Platform | Muhammad Yusuf</p>
-        <p style="margin-top: 0.5rem; opacity: 0.7;">Farg'ona, O'zbekiston 🇺🇿</p>
-        <div class="social-links">
-            <a href="https://instagram.com/khujayev._" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">📸</a>
-            <a href="https://github.com/yusuf18081998-blip" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">💻</a>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-left">
+        <div class="footer-logo">
+            <div class="nav-dot" style="animation: none; opacity:0.6"></div>
+            YusufAI
         </div>
-    </footer>
+        <div class="footer-copy">&copy; 2026 Muhammad Yusuf &mdash; Farg'ona, O'zbekiston</div>
+    </div>
+    <div class="footer-links">
+        <a href="https://instagram.com/khujayev._" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+        <a href="https://github.com/yusuf18081998-blip" target="_blank" rel="noopener" class="footer-link">GitHub</a>
+        <a href="Demo.html" class="footer-link">Demo</a>
+    </div>
+</footer>
+
 </body>
 </html>
