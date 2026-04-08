@@ -4,798 +4,352 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YusufAI Demo - 4 AI Platform</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #0d0d0f;
-            --surface: #16161a;
-            --surface2: #1e1e24;
-            --border: rgba(255,255,255,0.07);
-            --border2: rgba(255,255,255,0.13);
-            --text: #e8e8f0;
-            --muted: #6b6b80;
-            --accent: #7c6af7;
-            --accent2: #a78bfa;
-            --gpt: #10a37f;
-            --claude: #e8734a;
-            --gemini: #4285f4;
-            --groq: #f55036;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Space Grotesk', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-        }
-
-        /* SIDEBAR */
-        .sidebar {
-            width: 260px;
-            background: var(--surface);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            padding: 0;
-            flex-shrink: 0;
-        }
-
-        .sidebar-top {
-            padding: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .logo {
-            font-family: 'Space Mono', monospace;
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .logo-dot {
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            background: var(--accent);
-            box-shadow: 0 0 10px var(--accent);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(0.85); }
-        }
-
-        .new-chat-btn {
-            width: 100%;
-            padding: 11px 16px;
-            background: var(--surface2);
-            border: 1px solid var(--border2);
-            border-radius: 10px;
-            color: var(--text);
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
-        }
-
-        .new-chat-btn:hover {
-            background: rgba(124, 106, 247, 0.15);
-            border-color: var(--accent);
-        }
-
-        .plus-icon {
-            width: 18px; height: 18px;
-            border: 1.5px solid var(--muted);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 14px; line-height: 1;
-            color: var(--muted);
-        }
-
-        .ai-section {
-            padding: 14px 20px 10px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .section-label {
-            font-size: 10px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--muted);
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .ai-btn {
-            width: 100%;
-            padding: 10px 12px;
-            background: transparent;
-            border: 1px solid transparent;
-            border-radius: 9px;
-            color: var(--muted);
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 13.5px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.2s;
-            margin-bottom: 3px;
-            text-align: left;
-        }
-
-        .ai-btn:hover {
-            background: var(--surface2);
-            color: var(--text);
-        }
-
-        .ai-btn.active {
-            background: var(--surface2);
-            border-color: var(--border2);
-            color: var(--text);
-        }
-
-        .ai-indicator {
-            width: 7px; height: 7px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .ai-btn.active .model-badge {
-            opacity: 1;
-        }
-
-        .model-badge {
-            margin-left: auto;
-            font-size: 10px;
-            padding: 2px 7px;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.06);
-            color: var(--muted);
-            opacity: 0;
-            transition: opacity 0.2s;
-            font-family: 'Space Mono', monospace;
-        }
-
-        .ai-btn.active .model-badge { opacity: 1; }
-        .ai-btn:hover .model-badge { opacity: 0.7; }
-
-        .history-section {
-            flex: 1;
-            overflow-y: auto;
-            padding: 14px 20px;
-        }
-
-        .history-section::-webkit-scrollbar { width: 3px; }
-        .history-section::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-
-        .history-item {
-            padding: 9px 11px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            color: var(--muted);
-            transition: all 0.2s;
-            margin-bottom: 2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .history-item:hover { background: var(--surface2); color: var(--text); }
-        .history-item.active { background: var(--surface2); color: var(--text); }
-
-        .history-icon {
-            width: 5px; height: 5px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        /* MAIN */
-        .main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: var(--bg);
-            overflow: hidden;
-        }
-
-        .topbar {
-            padding: 16px 28px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .current-ai-name {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text);
-            display: flex;
-            align-items: center;
-            gap: 9px;
-        }
-
-        .status-dot {
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: #22c55e;
-            box-shadow: 0 0 6px #22c55e;
-        }
-
-        .topbar-meta {
-            font-size: 12px;
-            color: var(--muted);
-            font-family: 'Space Mono', monospace;
-            display: flex;
-            gap: 16px;
-        }
-
-        .messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 28px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            scroll-behavior: smooth;
-        }
-
-        .messages::-webkit-scrollbar { width: 4px; }
-        .messages::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-
-        .welcome {
-            margin: auto;
-            text-align: center;
-            padding: 40px 20px;
-            max-width: 520px;
-        }
-
-        .welcome-title {
-            font-family: 'Space Mono', monospace;
-            font-size: 36px;
-            font-weight: 700;
-            letter-spacing: -1px;
-            color: var(--text);
-            margin-bottom: 10px;
-        }
-
-        .welcome-title span {
-            color: var(--accent2);
-        }
-
-        .welcome-sub {
-            font-size: 14px;
-            color: var(--muted);
-            margin-bottom: 28px;
-            line-height: 1.7;
-        }
-
-        .chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-        }
-
-        .chip {
-            padding: 8px 16px;
-            background: var(--surface);
-            border: 1px solid var(--border2);
-            border-radius: 20px;
-            font-size: 13px;
-            color: var(--muted);
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Space Grotesk', sans-serif;
-        }
-
-        .chip:hover {
-            border-color: var(--accent);
-            color: var(--accent2);
-            background: rgba(124, 106, 247, 0.1);
-        }
-
-        .msg-row {
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-            animation: msgIn 0.25s ease-out;
-        }
-
-        @keyframes msgIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        .msg-row.user { flex-direction: row-reverse; }
-
-        .avatar {
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 13px;
-            font-weight: 700;
-            flex-shrink: 0;
-            font-family: 'Space Mono', monospace;
-        }
-
-        .bubble {
-            max-width: 68%;
-            padding: 13px 17px;
-            border-radius: 14px;
-            font-size: 14.5px;
-            line-height: 1.65;
-            white-space: pre-wrap;
-        }
-
-        .msg-row.user .bubble {
-            background: var(--accent);
-            color: #fff;
-            border-bottom-right-radius: 4px;
-        }
-
-        .msg-row.ai .bubble {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--text);
-            border-bottom-left-radius: 4px;
-        }
-
-        .typing-dots {
-            display: inline-flex;
-            gap: 4px;
-            padding: 4px 0;
-        }
-
-        .typing-dots span {
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--accent);
-            animation: tdot 1.2s infinite;
-        }
-
-        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes tdot {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-            30% { transform: translateY(-6px); opacity: 1; }
-        }
-
-        /* INPUT */
-        .input-area {
-            padding: 20px 28px 24px;
-            border-top: 1px solid var(--border);
-            background: var(--bg);
-        }
-
-        .input-wrap {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            background: var(--surface);
-            border: 1px solid var(--border2);
-            border-radius: 14px;
-            padding: 6px 6px 6px 18px;
-            transition: border-color 0.2s;
-        }
-
-        .input-wrap:focus-within {
-            border-color: var(--accent);
-        }
-
-        .input-wrap input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            outline: none;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 14.5px;
-            color: var(--text);
-            padding: 8px 0;
-        }
-
-        .input-wrap input::placeholder { color: var(--muted); }
-
-        .send-btn {
-            padding: 10px 20px;
-            background: var(--accent);
-            border: none;
-            border-radius: 10px;
-            color: #fff;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .send-btn:hover:not(:disabled) {
-            background: var(--accent2);
-            transform: scale(1.03);
-        }
-
-        .send-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .input-hint {
-            text-align: center;
-            font-size: 11px;
-            color: var(--muted);
-            margin-top: 10px;
-            font-family: 'Space Mono', monospace;
-        }
-
-        .error-bubble {
-            background: rgba(245, 80, 54, 0.1) !important;
-            border-color: rgba(245, 80, 54, 0.3) !important;
-            color: #f87171 !important;
-        }
+        * {margin: 0; padding: 0; box-sizing: border-box;}
+        body {font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 100vh; overflow: hidden;}
+        .container {display: flex; height: 100vh;}
+        .sidebar {width: 280px; background: rgba(255, 255, 255, 0.98); padding: 20px; box-shadow: 2px 0 20px rgba(0,0,0,0.1); display: flex; flex-direction: column;}
+        .logo {font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 30px; text-align: center;}
+        .new-chat {padding: 15px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; margin-bottom: 20px; font-size: 15px; transition: transform 0.2s;}
+        .new-chat:hover {transform: scale(1.05);}
+        .ai-button {width: 100%; padding: 15px; margin-bottom: 10px; border: 2px solid #e0e0e0; border-radius: 12px; background: white; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 600;}
+        .ai-button:hover {border-color: #667eea; transform: translateX(5px);}
+        .ai-button.active {background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-color: transparent; box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);}
+        .ai-icon {width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px;}
+        .history {flex: 1; overflow-y: auto;}
+        .history-item {padding: 12px; margin-bottom: 8px; background: #f5f5f5; border-radius: 8px; cursor: pointer; font-size: 14px; transition: all 0.2s;}
+        .history-item:hover {background: #e0e0e0; transform: translateX(5px);}
+        .history-item.active {background: #667eea; color: white;}
+        .main {flex: 1; display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.95);}
+        .header {padding: 20px 30px; background: white; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center;}
+        .ai-name {font-size: 20px; font-weight: 700; color: #667eea;}
+        .stats {font-size: 14px; color: #666; display: flex; gap: 20px;}
+        .messages {flex: 1; padding: 30px; overflow-y: auto; scroll-behavior: smooth;}
+        .message {margin-bottom: 24px; display: flex; gap: 12px; animation: fadeIn 0.3s;}
+        @keyframes fadeIn {from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);}}
+        .message.user {justify-content: flex-end;}
+        .message-avatar {width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;}
+        .user .message-avatar {background: linear-gradient(135deg, #667eea, #764ba2);}
+        .ai .message-avatar {background: #f0f0f0;}
+        .message-content {max-width: 70%; padding: 16px 20px; border-radius: 16px; line-height: 1.6; font-size: 15px; white-space: pre-wrap;}
+        .user .message-content {background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-bottom-right-radius: 4px;}
+        .ai .message-content {background: #f5f5f5; color: #333; border-bottom-left-radius: 4px;}
+        .input-area {padding: 25px 30px; background: white; border-top: 1px solid #e0e0e0;}
+        .input-container {display: flex; gap: 12px; max-width: 900px; margin: 0 auto;}
+        .input-container input {flex: 1; padding: 16px 24px; border: 2px solid #e0e0e0; border-radius: 30px; font-size: 15px; font-family: 'Inter', sans-serif;}
+        .input-container input:focus {outline: none; border-color: #667eea;}
+        .send-btn {padding: 16px 32px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 15px;}
+        .send-btn:hover:not(:disabled) {transform: scale(1.05);}
+        .send-btn:disabled {opacity: 0.5; cursor: not-allowed;}
+        .typing {display: inline-flex; gap: 4px;}
+        .typing span {width: 8px; height: 8px; border-radius: 50%; background: #667eea; animation: bounce 1.4s infinite;}
+        .typing span:nth-child(2) {animation-delay: 0.2s;}
+        .typing span:nth-child(3) {animation-delay: 0.4s;}
+        @keyframes bounce {0%, 60%, 100% {transform: translateY(0);} 30% {transform: translateY(-10px);}}
+        .welcome {text-align: center; padding: 60px 20px; color: #666;}
+        .welcome h2 {font-size: 32px; margin-bottom: 16px; color: #333;}
+        .welcome p {font-size: 16px; margin-bottom: 8px;}
+        .suggestions {display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 20px;}
+        .suggestion {padding: 12px 16px; background: white; border: 2px solid #e0e0e0; border-radius: 10px; cursor: pointer; transition: all 0.3s; font-size: 14px;}
+        .suggestion:hover {border-color: #667eea; background: #f8f9ff; transform: translateY(-2px);}
     </style>
 </head>
 <body>
-
-<div class="sidebar">
-    <div class="sidebar-top">
-        <div class="logo">
-            <div class="logo-dot"></div>
-            YusufAI
-        </div>
-        <button class="new-chat-btn" onclick="newChat()">
-            <div class="plus-icon">+</div>
-            Yangi suhbat
-        </button>
-    </div>
-
-    <div class="ai-section">
-        <div class="section-label">AI Modeli</div>
-        <button class="ai-btn active" data-ai="claude" onclick="selectAI(this)">
-            <div class="ai-indicator" style="background:var(--claude)"></div>
-            Claude 3.5
-            <span class="model-badge">Anthropic</span>
-        </button>
-        <button class="ai-btn" data-ai="gpt4" onclick="selectAI(this)">
-            <div class="ai-indicator" style="background:var(--gpt)"></div>
-            ChatGPT-4
-            <span class="model-badge">OpenAI</span>
-        </button>
-        <button class="ai-btn" data-ai="gemini" onclick="selectAI(this)">
-            <div class="ai-indicator" style="background:var(--gemini)"></div>
-            Gemini Pro
-            <span class="model-badge">Google</span>
-        </button>
-        <button class="ai-btn" data-ai="groq" onclick="selectAI(this)">
-            <div class="ai-indicator" style="background:var(--groq)"></div>
-            Groq Llama
-            <span class="model-badge">Meta</span>
-        </button>
-    </div>
-
-    <div class="history-section" id="historyList">
-        <div class="section-label">Suhbatlar</div>
-    </div>
-</div>
-
-<div class="main">
-    <div class="topbar">
-        <div class="current-ai-name" id="aiLabel">
-            <div class="status-dot"></div>
-            Claude 3.5 Sonnet
-        </div>
-        <div class="topbar-meta">
-            <span>500+ til</span>
-            <span>|</span>
-            <span>Bepul</span>
-            <span>|</span>
-            <span>Muhammad Yusuf (13)</span>
-        </div>
-    </div>
-
-    <div class="messages" id="messages">
-        <div class="welcome" id="welcomeScreen">
-            <div class="welcome-title">Yusuf<span>AI</span></div>
-            <div class="welcome-sub">
-                Haqiqiy sun'iy intellekt — har doim yangi javoblar<br>
-                ChatGPT, Claude, Gemini, Groq bir joyda
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">🤖 YusufAI</div>
+            <button class="new-chat" onclick="newChat()">➕ Yangi Suhbat</button>
+            <div class="ai-selector">
+                <button class="ai-button active" onclick="selectAI('gpt4')" data-ai="gpt4">
+                    <div class="ai-icon" style="background: #10a37f; color: white;">🤖</div>ChatGPT-4
+                </button>
+                <button class="ai-button" onclick="selectAI('claude')" data-ai="claude">
+                    <div class="ai-icon" style="background: #CC785C; color: white;">🎭</div>Claude 3.5
+                </button>
+                <button class="ai-button" onclick="selectAI('gemini')" data-ai="gemini">
+                    <div class="ai-icon" style="background: #4285F4; color: white;">💎</div>Gemini Pro
+                </button>
+                <button class="ai-button" onclick="selectAI('groq')" data-ai="groq">
+                    <div class="ai-icon" style="background: #F55036; color: white;">⚡</div>Groq (Llama)
+                </button>
             </div>
-            <div class="chips">
-                <div class="chip" onclick="quickAsk('Python dasturlashni tushuntir')">Python dasturlash</div>
-                <div class="chip" onclick="quickAsk('O\'zbekiston tarixi haqida gapir')">O'zbekiston tarixi</div>
-                <div class="chip" onclick="quickAsk('Matematika masalasi: 2x + 5 = 13, x = ?')">Matematika</div>
-                <div class="chip" onclick="quickAsk('Bahor haqida qisqa she\'r yoz')">She'r yoz</div>
-                <div class="chip" onclick="quickAsk('Ingliz tilini tez o\'rganish usullari')">Ingliz tili</div>
-                <div class="chip" onclick="quickAsk('JavaScript va Python farqi nima?')">JS vs Python</div>
+            <div class="history" id="chatHistory"></div>
+        </div>
+        <div class="main">
+            <div class="header">
+                <div class="ai-name" id="currentAI">ChatGPT-4</div>
+                <div class="stats"><div>🌍 500+ Til</div><div>💬 Cheksiz</div></div>
             </div>
-        </div>
-    </div>
-
-    <div class="input-area">
-        <div class="input-wrap">
-            <input
-                type="text"
-                id="msgInput"
-                placeholder="Savolingizni yozing..."
-                onkeydown="if(event.key==='Enter' && !event.shiftKey) sendMsg()"
-            >
-            <button class="send-btn" id="sendBtn" onclick="sendMsg()">
-                Yuborish &#8594;
-            </button>
-        </div>
-        <div class="input-hint">Enter — yuborish &nbsp;|&nbsp; Haqiqiy Claude API bilan ishlaydi</div>
-    </div>
-</div>
-
-<script>
-const AI_CONFIG = {
-    claude: {
-        label: 'Claude 3.5 Sonnet',
-        color: '#e8734a',
-        short: 'CL',
-        persona: "Sen YusufAI platformasidagi Claude 3.5 Sonnet - Anthropic tomonidan yaratilgan aqlli AI yordamchisan. O'zbek tilida, aniq, foydali va kreativ javob ber. Har bir javob original va yangi bo'lsin."
-    },
-    gpt4: {
-        label: 'ChatGPT-4',
-        color: '#10a37f',
-        short: 'GP',
-        persona: "Sen YusufAI platformasidagi ChatGPT-4 rolini o'ynayapsan (OpenAI uslubida). O'zbek tilida, do'stona, batafsil va izchil javob ber. Har doim yangi va original javob ber."
-    },
-    gemini: {
-        label: 'Gemini Pro',
-        color: '#4285f4',
-        short: 'GM',
-        persona: "Sen YusufAI platformasidagi Gemini Pro rolini o'ynayapsan (Google uslubida). O'zbek tilida, tez, ixcham va aniq javob ber. Har bir javob noyob va yangi bo'lsin."
-    },
-    groq: {
-        label: 'Groq (Llama 3.3)',
-        color: '#f55036',
-        short: 'GQ',
-        persona: "Sen YusufAI platformasidagi Groq Llama 3.3 rolini o'ynayapsan (Meta AI uslubida). O'zbek tilida, texnik, aniq va samarali javob ber. Har doim turli va original javob ber."
-    }
-};
-
-let currentAI = 'claude';
-let currentChatId = null;
-let chats = JSON.parse(localStorage.getItem('yusufai_v2') || '[]');
-
-function selectAI(btn) {
-    document.querySelectorAll('.ai-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentAI = btn.dataset.ai;
-    document.getElementById('aiLabel').innerHTML = `<div class="status-dot"></div>${AI_CONFIG[currentAI].label}`;
-}
-
-function newChat() {
-    const chat = { id: Date.now(), ai: currentAI, title: 'Yangi suhbat', messages: [] };
-    chats.unshift(chat);
-    currentChatId = chat.id;
-    saveChats();
-    renderHistory();
-    renderMessages();
-}
-
-function openChat(id) {
-    currentChatId = id;
-    const chat = chats.find(c => c.id === id);
-    if (chat) {
-        currentAI = chat.ai;
-        document.querySelectorAll('.ai-btn').forEach(b => b.classList.remove('active'));
-        const btn = document.querySelector(`[data-ai="${currentAI}"]`);
-        if (btn) btn.classList.add('active');
-        document.getElementById('aiLabel').innerHTML = `<div class="status-dot"></div>${AI_CONFIG[currentAI].label}`;
-    }
-    renderHistory();
-    renderMessages();
-}
-
-function saveChats() {
-    localStorage.setItem('yusufai_v2', JSON.stringify(chats.slice(0, 50)));
-}
-
-function renderHistory() {
-    const list = document.getElementById('historyList');
-    const label = list.querySelector('.section-label');
-    list.innerHTML = '';
-    list.appendChild(label);
-
-    chats.slice(0, 20).forEach(chat => {
-        const div = document.createElement('div');
-        div.className = 'history-item' + (chat.id === currentChatId ? ' active' : '');
-        div.innerHTML = `
-            <div class="history-icon" style="background:${AI_CONFIG[chat.ai]?.color || '#666'}"></div>
-            ${escHtml(chat.title)}
-        `;
-        div.onclick = () => openChat(chat.id);
-        list.appendChild(div);
-    });
-}
-
-function renderMessages() {
-    const msgsEl = document.getElementById('messages');
-    const chat = chats.find(c => c.id === currentChatId);
-
-    if (!chat || chat.messages.length === 0) {
-        msgsEl.innerHTML = `
-            <div class="welcome" id="welcomeScreen">
-                <div class="welcome-title">Yusuf<span>AI</span></div>
-                <div class="welcome-sub">Haqiqiy sun'iy intellekt — har doim yangi javoblar<br>ChatGPT, Claude, Gemini, Groq bir joyda</div>
-                <div class="chips">
-                    <div class="chip" onclick="quickAsk('Python dasturlashni tushuntir')">Python dasturlash</div>
-                    <div class="chip" onclick="quickAsk('O\\'zbekiston tarixi haqida gapir')">O'zbekiston tarixi</div>
-                    <div class="chip" onclick="quickAsk('Matematika masalasi: 2x + 5 = 13, x = ?')">Matematika</div>
-                    <div class="chip" onclick="quickAsk('Bahor haqida qisqa she\\'r yoz')">She'r yoz</div>
-                    <div class="chip" onclick="quickAsk('Ingliz tilini tez o\\'rganish usullari')">Ingliz tili</div>
-                    <div class="chip" onclick="quickAsk('JavaScript va Python farqi nima?')">JS vs Python</div>
+            <div class="messages" id="messages">
+                <div class="welcome">
+                    <h2>YusufAI - Universal Platform</h2>
+                    <p>✨ 4 ta eng kuchli AI bir joyda</p>
+                    <p>🌍 500+ til | 💬 Bepul va cheksiz</p>
+                    <p>🚀 Muhammad Yusuf (13) tomonidan yaratilgan</p>
+                    <div class="suggestions">
+                        <div class="suggestion" onclick="askQuestion('Python o\'rganish')">💻 Python</div>
+                        <div class="suggestion" onclick="askQuestion('O\'zbekiston haqida')">🇺🇿 O'zbekiston</div>
+                        <div class="suggestion" onclick="askQuestion('Matematika')">🔢 Matematika</div>
+                        <div class="suggestion" onclick="askQuestion('She\'r yoz')">✍️ She'r</div>
+                    </div>
                 </div>
-            </div>`;
-        return;
-    }
+            </div>
+            <div class="input-area">
+                <div class="input-container">
+                    <input type="text" id="messageInput" placeholder="Savolingizni yozing..." onkeypress="if(event.key==='Enter') sendMessage()">
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">Yuborish</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const AI_NAMES = {gpt4: 'ChatGPT-4', claude: 'Claude 3.5', gemini: 'Gemini Pro', groq: 'Groq (Llama 3.3)'};
+        let currentAI = 'gpt4', currentChat = null, chats = JSON.parse(localStorage.getItem('yusufai_demo') || '[]');
 
-    msgsEl.innerHTML = '';
-    chat.messages.forEach(m => appendBubble(m.role, m.content, false));
-    msgsEl.scrollTop = msgsEl.scrollHeight;
-}
+        const RESPONSES = {
+            prog: "Dasturlash bo'yicha yordam:\n\n🐍 Python - Boshlovchilar uchun\n💻 JavaScript - Web\n☕ Java - Enterprise\n⚙️ C++ - Tezlik\n\nQaysi tilni o'rganmoqchisiz?",
+            uz: "🇺🇿 O'zbekiston\n\n📍 Markaziy Osiyo\n🏛️ Toshkent - poytaxt\n👥 36M+ aholi\n🕌 Samarqand, Buxoro, Xiva\n\nNimani bilishni xohlaysiz?",
+            math: "🔢 Matematika\n\n📐 Algebra\n📊 Geometriya\n📈 Analiz\n📉 Statistika\n\nQanday masala?",
+            hist: "📚 Tarix\n\n🏛️ Qadim dunyo\n🕌 O'rta asrlar\n🌍 Zamonaviy\n\nQaysi davr?",
+            geo: "🌍 Geografiya\n\n🌏 7 Qit'a\n🌊 5 Okean\n🏔️ Tog'lar\n🏜️ Cho'llar\n\nQaysi joy?",
+            art: "🎨 San'at\n\n🖼️ Rasm\n🎼 Musiqa\n📚 Adabiyot\n🎭 Teatr\n\nQaysi turi?",
+            sport: "⚽ Sport\n\n⚽ Futbol\n🏀 Basketball\n🎾 Tennis\n🏊 Suzish\n\nQaysi sport?",
+            food: "🍕 Ovqat\n\n🍛 O'zbek\n🍕 Italiya\n🍣 Yaponiya\n🌮 Meksika\n\nQaysi oshxona?"
+        };
 
-function appendBubble(role, text, animate = true) {
-    const msgsEl = document.getElementById('messages');
-    const welcome = document.getElementById('welcomeScreen');
-    if (welcome) welcome.remove();
-
-    const cfg = AI_CONFIG[currentAI];
-    const row = document.createElement('div');
-    row.className = 'msg-row ' + role;
-    if (!animate) row.style.animation = 'none';
-
-    if (role === 'user') {
-        row.innerHTML = `
-            <div class="bubble">${escHtml(text)}</div>
-            <div class="avatar" style="background:rgba(124,106,247,0.2);color:#a78bfa">YO</div>`;
-    } else {
-        row.innerHTML = `
-            <div class="avatar" style="background:${cfg.color}22;color:${cfg.color}">${cfg.short}</div>
-            <div class="bubble">${escHtml(text)}</div>`;
-    }
-
-    msgsEl.appendChild(row);
-    msgsEl.scrollTop = msgsEl.scrollHeight;
-    return row;
-}
-
-function showTyping() {
-    const msgsEl = document.getElementById('messages');
-    const welcome = document.getElementById('welcomeScreen');
-    if (welcome) welcome.remove();
-
-    const cfg = AI_CONFIG[currentAI];
-    const row = document.createElement('div');
-    row.className = 'msg-row ai';
-    row.id = 'typingRow';
-    row.innerHTML = `
-        <div class="avatar" style="background:${cfg.color}22;color:${cfg.color}">${cfg.short}</div>
-        <div class="bubble">
-            <div class="typing-dots"><span></span><span></span><span></span></div>
-        </div>`;
-    msgsEl.appendChild(row);
-    msgsEl.scrollTop = msgsEl.scrollHeight;
-}
-
-function removeTyping() {
-    const el = document.getElementById('typingRow');
-    if (el) el.remove();
-}
-
-function quickAsk(text) {
-    document.getElementById('msgInput').value = text;
-    sendMsg();
-}
-
-async function sendMsg() {
-    const input = document.getElementById('msgInput');
-    const text = input.value.trim();
-    if (!text) return;
-
-    if (!currentChatId) {
-        const chat = { id: Date.now(), ai: currentAI, title: text.substring(0, 35), messages: [] };
-        chats.unshift(chat);
-        currentChatId = chat.id;
-    }
-
-    const chat = chats.find(c => c.id === currentChatId);
-    if (chat.messages.length === 0) chat.title = text.substring(0, 35);
-    chat.messages.push({ role: 'user', content: text });
-    input.value = '';
-    appendBubble('user', text);
-
-    const btn = document.getElementById('sendBtn');
-    btn.disabled = true;
-    showTyping();
-    saveChats();
-    renderHistory();
-
-    const apiMessages = chat.messages.map(m => ({
-        role: m.role === 'ai' ? 'assistant' : 'user',
-        content: m.content
-    }));
-
-    try {
-        const res = await fetch('https://api.anthropic.com/v1/messages', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                model: 'claude-sonnet-4-20250514',
-                max_tokens: 1000,
-                system: AI_CONFIG[currentAI].persona,
-                messages: apiMessages
-            })
-        });
-
-        const data = await res.json();
-
-        if (data.error) {
-            throw new Error(data.error.message || 'API xatosi');
+        function selectAI(ai) {
+            currentAI = ai;
+            document.querySelectorAll('.ai-button').forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-ai="'+ai+'"]').classList.add('active');
+            document.getElementById('currentAI').textContent = AI_NAMES[ai];
         }
 
-        const reply = data.content?.[0]?.text || 'Javob olishda xatolik.';
-        removeTyping();
-        chat.messages.push({ role: 'ai', content: reply });
-        appendBubble('ai', reply);
+        function newChat() {
+            currentChat = {id: Date.now(), ai: currentAI, title: 'Yangi', messages: []};
+            chats.unshift(currentChat);
+            save();
+            renderHistory();
+            renderMessages();
+        }
 
-    } catch (err) {
-        removeTyping();
-        const errorMsg = `Xatolik: ${err.message}`;
-        chat.messages.push({ role: 'ai', content: errorMsg });
-        const row = appendBubble('ai', errorMsg);
-        row.querySelector('.bubble').classList.add('error-bubble');
-    }
+        function selectChat(id) {
+            currentChat = chats.find(c => c.id === id);
+            selectAI(currentChat.ai);
+            renderHistory();
+            renderMessages();
+        }
 
-    saveChats();
-    renderHistory();
-    btn.disabled = false;
-    input.focus();
-}
+        function save() {
+            localStorage.setItem('yusufai_demo', JSON.stringify(chats));
+        }
 
-function escHtml(str) {
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/\n/g, '<br>');
-}
+        function renderHistory() {
+            document.getElementById('chatHistory').innerHTML = chats.map(c => 
+                `<div class="history-item ${c.id === currentChat?.id ? 'active' : ''}" onclick="selectChat(${c.id})">
+                    <div style="font-weight:600">${c.title}</div>
+                    <div style="font-size:12px;opacity:0.7">${AI_NAMES[c.ai]}</div>
+                </div>`
+            ).join('');
+        }
 
-// Init
-renderHistory();
-if (chats.length > 0) {
-    currentChatId = chats[0].id;
-    currentAI = chats[0].ai;
-    const btn = document.querySelector(`[data-ai="${currentAI}"]`);
-    if (btn) { document.querySelectorAll('.ai-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); }
-    document.getElementById('aiLabel').innerHTML = `<div class="status-dot"></div>${AI_CONFIG[currentAI].label}`;
-    renderHistory();
-    renderMessages();
-}
-</script>
+        function renderMessages() {
+            if (!currentChat || !currentChat.messages.length) {
+                document.getElementById('messages').innerHTML = 
+                    `<div class="welcome"><h2>YusufAI</h2><p>✨ 4 ta AI | 🌍 500+ til | 💬 Bepul</p><p>🚀 Muhammad Yusuf (13)</p>
+                    <div class="suggestions">
+                        <div class="suggestion" onclick="askQuestion('Python')">💻 Python</div>
+                        <div class="suggestion" onclick="askQuestion('O\\'zbekiston')">🇺🇿 O'zbekiston</div>
+                        <div class="suggestion" onclick="askQuestion('Matematika')">🔢 Math</div>
+                        <div class="suggestion" onclick="askQuestion('She\\'r')">✍️ She'r</div>
+                    </div></div>`;
+                return;
+            }
+            document.getElementById('messages').innerHTML = currentChat.messages.map(m => 
+                `<div class="message ${m.role}">
+                    ${m.role === 'ai' ? '<div class="message-avatar">' + ({gpt4:'🤖',claude:'🎭',gemini:'💎',groq:'⚡'}[currentChat.ai]) + '</div>' : ''}
+                    <div class="message-content">${m.content}</div>
+                    ${m.role === 'user' ? '<div class="message-avatar">👤</div>' : ''}
+                </div>`
+            ).join('');
+            document.getElementById('messages').scrollTop = 999999;
+        }
+
+        function getResponse(msg) {
+            const m = msg.toLowerCase();
+            
+            // Greetings - varied responses
+            if (/salom|hello|hi|привет/.test(m)) {
+                const greetings = [
+                    `Assalomu alaykum! Men ${AI_NAMES[currentAI]} - 500+ tilda gaplashaman. Sizga qanday yordam bera olaman?`,
+                    `Salom! ${AI_NAMES[currentAI]} bilan suhbatlashayotganingizdan xursandman. Nimani bilishni xohlaysiz?`,
+                    `Xush kelibsiz! Men ${AI_NAMES[currentAI]}, sizning AI yordamchingizman. Savolingiz bormi?`,
+                    `Assalomu alaykum! ${AI_NAMES[currentAI]} sifatida sizga yordam berishdan mamnunman. Boshlaylikmi?`
+                ];
+                return greetings[Math.floor(Math.random() * greetings.length)];
+            }
+            
+            // Programming - more detailed
+            if (/dastur|program|python|javascript|kod|code/.test(m)) {
+                const responses = [
+                    RESPONSES.prog + "\n\n💡 Maslahat: Amaliy mashqlar bilan boshlang!",
+                    RESPONSES.prog + "\n\n🎯 Python - eng oson til boshlovchilar uchun!",
+                    RESPONSES.prog + "\n\n⚡ JavaScript bilan websayt yaratishni boshlashingiz mumkin!",
+                    RESPONSES.prog + "\n\n🚀 Birinchi loyihangizni yaratishga tayyormisiz?"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+            
+            // Uzbekistan - varied responses
+            if (/o'zbek|uzbek|toshkent|samarqand|buxoro|farg'ona/.test(m)) {
+                const responses = [
+                    RESPONSES.uz + "\n\n✨ Samarqand - Sharqning dumlisi!",
+                    RESPONSES.uz + "\n\n🏛️ Buxoro - 2500 yillik tarixga ega!",
+                    RESPONSES.uz + "\n\n🌆 Toshkent - Markaziy Osiyoning eng katta shahri!",
+                    RESPONSES.uz + "\n\n🌄 Farg'ona vodiysi - mevalar va ipak maskani!"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+            
+            // Math - varied approaches
+            if (/matematik|hisob|tengla|geometr|algebra/.test(m)) {
+                const responses = [
+                    RESPONSES.math + "\n\n📐 Geometriya masalalariga yordam bera olaman!",
+                    RESPONSES.math + "\n\n🔢 Algebraik tenglamalar yechishni boshlaylikmi?",
+                    RESPONSES.math + "\n\n📊 Statistika va ehtimollik bo'yicha ham yordam beraman!",
+                    RESPONSES.math + "\n\n📈 Matematik tahlil masalalarini yechaylik!"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+            
+            // History
+            if (/tarix|history|qadim|o'rta asr/.test(m)) {
+                return RESPONSES.hist + "\n\n" + [
+                    "📚 Qaysi davr sizni qiziqtiradi?",
+                    "🏛️ Jahon tariximi yoki O'zbekiston tariximi?",
+                    "⚔️ Harbiy tarix yoki madaniyat tariximi?",
+                    "🌍 Qaysi mamlakat tarixini bilishni xohlaysiz?"
+                ][Math.floor(Math.random() * 4)];
+            }
+            
+            // Geography
+            if (/geografiya|mamlakat|qit'a|okean|shahar/.test(m)) {
+                return RESPONSES.geo + "\n\n" + [
+                    "🗺️ Qaysi mamlakat haqida bilishni xohlaysiz?",
+                    "🏔️ Tog'lar, daryolar yoki cho'llarmi?",
+                    "🌊 Okeanlar va dengizlar haqidami?",
+                    "🏙️ Mashhur shaharlar haqida gaplaymizmi?"
+                ][Math.floor(Math.random() * 4)];
+            }
+            
+            // Art
+            if (/san'at|rasm|musiqa|adabiyot|she'r/.test(m)) {
+                return RESPONSES.art + "\n\n" + [
+                    "🎨 She'r yozishni o'rganmoqchimisiz?",
+                    "🎼 Musiqa tarixi sizni qiziqtiradimi?",
+                    "📚 Qaysi yozuvchini yaxshi ko'rasiz?",
+                    "🖼️ Rasmchilik asarlarini tahlil qilaylikmi?"
+                ][Math.floor(Math.random() * 4)];
+            }
+            
+            // Sport
+            if (/sport|futbol|basketball|tennis|olimp/.test(m)) {
+                return RESPONSES.sport + "\n\n" + [
+                    "⚽ Futbol yoki basketbolmi?",
+                    "🏃 Sog'lom turmush tarzi haqidami?",
+                    "🥇 Olimpiada chempionlari haqida gaplaymizmi?",
+                    "💪 Qaysi sportni sinab ko'rmoqchisiz?"
+                ][Math.floor(Math.random() * 4)];
+            }
+            
+            // Food
+            if (/ovqat|taom|osh|pizza|sushi|retsept/.test(m)) {
+                return RESPONSES.food + "\n\n" + [
+                    "🍛 O'zbek milliy taomlari haqidami?",
+                    "🍕 Dunyo oshxonalari sizni qiziqtiradimi?",
+                    "👨‍🍳 Retsept kerakmi?",
+                    "🍵 Ichimliklar haqida gaplaymizmi?"
+                ][Math.floor(Math.random() * 4)];
+            }
+            
+            // Default - varied responses based on AI type
+            const aiPersonality = {
+                gpt4: [
+                    "Bu juda qiziqarli savol! Men ChatGPT-4 sifatida sizga batafsil javob bera olaman.",
+                    "Yaxshi tanlov! OpenAI ning eng kuchli modeli sifatida sizga yordam berishdan xursandman.",
+                    "Ajoyib savol! Men GPT-4 - eng zamonaviy til modellaridan biriman.",
+                    "Bu mavzuni muhokama qilaylik! Men sizga to'liq ma'lumot bera olaman."
+                ],
+                claude: [
+                    "Qiziqarli! Men Claude - kreativ vazifalar va chuqur tahlilda yaxshi ishlayman.",
+                    "Bu mavzu menga yoqdi! Anthropic ning modeli sifatida sizga yordam beraman.",
+                    "Yaxshi savol! Men Claude - uzun muloqotlarda juda samaraliman.",
+                    "Keling, buni birga ko'rib chiqaylik! Men sizga kreativ yondashuvni taklif qilaman."
+                ],
+                gemini: [
+                    "Ajoyib! Men Gemini Pro - Google ning tezkor va kuchli AI modeliman.",
+                    "Yaxshi tanlov! Men sizga tezda va aniq javob bera olaman.",
+                    "Bu qiziq! Google AI sifatida sizga yordam berishdan mamnunman.",
+                    "Boshlaylik! Men Gemini - zamonaviy ko'p vazifali modellardan biriman."
+                ],
+                groq: [
+                    "Super! Men Groq platformasidagi Llama 3.3 - eng tez AI modellardan biriman.",
+                    "Ajoyib! Meta ning modeli sifatida texnik savollarda yaxshi ishlayman.",
+                    "Yaxshi savol! Men juda tez javob beraman - bu mening kuchli tomonim!",
+                    "Keling, tezda hal qilaylik! Men Groq - eng tezkor AI platformalardan biriman."
+                ]
+            };
+            
+            const personality = aiPersonality[currentAI] || aiPersonality.gpt4;
+            const intro = personality[Math.floor(Math.random() * personality.length)];
+            
+            const topics = [
+                "💻 Dasturlash\n🌍 Geografiya\n📚 Tarix\n🔢 Matematika",
+                "🎨 San'at\n⚽ Sport\n🍕 Ovqat\n🇺🇿 O'zbekiston",
+                "🧠 Fan\n🎓 Ta'lim\n💡 Texnologiya\n🌱 Tabiat",
+                "📖 Adabiyot\n🎵 Musiqa\n🎬 Kino\n🎮 O'yinlar"
+            ];
+            
+            return `${intro}\n\nMen sizga quyidagi mavzularda yordam bera olaman:\n\n${topics[Math.floor(Math.random() * topics.length)]}\n\nVa yana ko'p narsalar! Savolingizni batafsil yozing.`;
+        }
+
+        function askQuestion(q) {
+            document.getElementById('messageInput').value = q;
+            sendMessage();
+        }
+
+        async function sendMessage() {
+            if (!currentChat) newChat();
+            const input = document.getElementById('messageInput');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            currentChat.messages.push({role: 'user', content: msg});
+            if (currentChat.messages.length === 1) currentChat.title = msg.substring(0, 40);
+            input.value = '';
+            renderMessages();
+
+            const btn = document.getElementById('sendBtn');
+            btn.disabled = true;
+
+            const typing = document.createElement('div');
+            typing.className = 'message ai';
+            typing.innerHTML = '<div class="message-avatar">' + ({gpt4:'🤖',claude:'🎭',gemini:'💎',groq:'⚡'}[currentAI]) + '</div><div class="message-content"><div class="typing"><span></span><span></span><span></span></div></div>';
+            document.getElementById('messages').appendChild(typing);
+            document.getElementById('messages').scrollTop = 999999;
+
+            await new Promise(r => setTimeout(r, 1000 + Math.random() * 1000));
+            typing.remove();
+
+            currentChat.messages.push({role: 'ai', content: getResponse(msg)});
+            save();
+            renderMessages();
+            renderHistory();
+            btn.disabled = false;
+        }
+
+        renderHistory();
+        if (chats.length) {currentChat = chats[0]; selectAI(currentChat.ai); renderMessages();}
+    </script>
 </body>
 </html>
