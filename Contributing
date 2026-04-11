@@ -1,0 +1,236 @@
+# 🤝 Hissa Qo'shish (Contributing)
+
+YusufAI loyihasiga qo'shgan hissangiz uchun rahmat! 🎉
+
+---
+
+## 📋 Qanday Hissa Qo'shish Mumkin?
+
+### 1. 🐛 Bug Report
+Xato topdingizmi? Issue oching:
+- Xatoning tavsifi
+- Qanday takrorlash mumkin
+- Kutilgan natija
+- Screenshot (agar kerak bo'lsa)
+
+### 2. ✨ Feature Request
+Yangi fikringiz bormi? Bizga ayting:
+- Qanday xususiyat
+- Nima uchun kerak
+- Qanday ishlashi kerak
+
+### 3. 💻 Code Contribution
+Kod yozmoqchimisiz?
+
+---
+
+## 🚀 Development Setup
+
+```bash
+# 1. Fork qiling
+# GitHub'da "Fork" tugmasini bosing
+
+# 2. Clone qiling
+git clone https://github.com/YOUR_USERNAME/YusufAI.git
+cd YusufAI
+
+# 3. Backend setup
+cd backend
+pip install -r requirements.txt
+cp .env.example .env
+# .env ga API keylarni qo'shing
+
+# 4. Frontend test
+cd ../frontend
+# demo.html ni oching
+
+# 5. Branch yarating
+git checkout -b feature/amazing-feature
+
+# 6. Kod yozing
+# ...
+
+# 7. Test qiling
+python backend/app.py
+# Frontend test
+
+# 8. Commit
+git add .
+git commit -m "Add: amazing feature"
+
+# 9. Push
+git push origin feature/amazing-feature
+
+# 10. Pull Request
+# GitHub'da PR oching
+```
+
+---
+
+## 📐 Code Style
+
+### Python (Backend)
+```python
+# PEP 8 standard
+# Funktsiyalar - snake_case
+def get_user_data():
+    pass
+
+# Klasslar - PascalCase
+class UserManager:
+    pass
+
+# Konstantalar - UPPERCASE
+API_KEY = "..."
+
+# Docstrings
+def process_message(text):
+    """Process incoming message.
+    
+    Args:
+        text (str): User message
+        
+    Returns:
+        str: AI response
+    """
+    pass
+```
+
+### JavaScript (Frontend)
+```javascript
+// camelCase
+function sendMessage() {}
+
+// Constants - UPPER_CASE
+const API_URL = "...";
+
+// Arrow functions
+const getData = () => {};
+
+// Comments
+// Single line
+/* Multi
+   line */
+```
+
+### HTML/CSS
+```html
+<!-- Semantic HTML -->
+<section class="chat-container">
+  <div class="message user">...</div>
+</section>
+```
+
+```css
+/* BEM notation */
+.chat-container {}
+.chat-container__message {}
+.chat-container__message--user {}
+```
+
+---
+
+## ✅ Pull Request Checklist
+
+Pull Request ochishdan oldin:
+
+- [ ] Kod ishlayapti (local test)
+- [ ] Xatolik yo'q (no errors)
+- [ ] Code style to'g'ri
+- [ ] Comments qo'shilgan
+- [ ] README yangilangan (kerak bo'lsa)
+- [ ] Branch nomi to'g'ri (`feature/`, `fix/`, `docs/`)
+- [ ] Commit message aniq
+
+---
+
+## 📝 Commit Message Format
+
+```
+Type: Brief description
+
+Longer description (optional)
+
+Fixes #123
+```
+
+**Types:**
+- `Add:` Yangi xususiyat
+- `Fix:` Bug fix
+- `Update:` Mavjud xususiyatni yangilash
+- `Remove:` O'chirish
+- `Docs:` Documentation
+- `Style:` Code formatting
+- `Refactor:` Code refactoring
+- `Test:` Testlar
+- `Chore:` Maintenance
+
+**Misol:**
+```
+Add: Voice input feature
+
+Added Web Speech API integration for voice input.
+Users can now speak instead of typing.
+
+Fixes #42
+```
+
+---
+
+## 🧪 Testing
+
+```bash
+# Backend test
+python -m pytest backend/tests/
+
+# Manual test
+python backend/app.py
+# Browser'da test qiling
+```
+
+---
+
+## 📖 Documentation
+
+Yangi feature qo'shsangiz:
+- README.md ni yangilang
+- docs/ papkasiga qo'shing
+- Code comments yozing
+- API docs yangilang
+
+---
+
+## 🎯 Priority Issues
+
+Agar qayerdan boshlashni bilmasangiz:
+- `good first issue` label
+- `help wanted` label
+- `priority: high` label
+
+---
+
+## 💬 Savollar?
+
+- GitHub Discussions
+- Email: yusufaluz1@gmail.com
+- Issue oching
+
+---
+
+## 🙏 Rahmat!
+
+Har bir hissa - katta yoki kichik - muhim!
+
+**Contributors:**
+- Muhammad Yusuf [@yusuf18081998-blip](https://github.com/yusuf18081998-blip)
+- [Sizning ismingiz bu yerda bo'lishi mumkin! ⭐]
+
+---
+
+<div align="center">
+
+**YusufAI** - Built with ❤️ by the community
+
+[Back to README](../README.md)
+
+</div>
