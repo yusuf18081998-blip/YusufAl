@@ -1,0 +1,353 @@
+# YusufAI Backend Server
+# Python Flask + 4 AI APIs
+
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import os
+from datetime import datetime
+import sqlite3
+
+# AI Libraries
+import anthropic
+import openai
+from groq import Groq
+import google.generativeai as genai
+
+app = Flask(__name__)
+CORS(app)  # Allow frontend to connect
+
+# ====================
+# CONFIGURATION
+# ====================
+
+# API Keys (Environment Variables - IMPORTANT!)
+CLAUDE_KEY = os.getenv('CLAUDE_API_KEY', 'sk-ant-api03-...')
+GPT_KEY = os.getenv('OPENAI_API_KEY', 'sk-proj-...')
+GEMINI_KEY = os.getenv('GEMINI_API_KEY', 'AIza...')
+GROQ_KEY = os.getenv('GROQ_API_KEY', 'gsk_...')
+
+# Initialize AI clients
+claude_client = anthropic.Anthropic(api_key=CLAUDE_KEY)
+openai.api_key = GPT_KEY
+genai.configure(api_key=GEMINI_KEY)
+groq_client = Groq(api_key=GROQ_KEY)
+
+# ====================
+# DATABASE SETUP
+# ====================
+
+def init_db():
+    """Initialize SQLite database"""
+    conn = sqlite3.connect('yusufai.db')
+    cursor = conn.cursor()
+    
+    # Users table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    
+    # Chats table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS chats (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            ai_type TEXT NOT NULL,
+            title TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users (id)
+        )
+    ''')
+    
+    # Messages table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS messages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            chat_id INTEGER,
+            role TEXT NOT NULL,
+            content TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (chat_id) REFERENCES chats (id)
+        )
+    ''')
+    
+    # Stats table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS stats (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ai_type TEXT NOT NULL,
+            messages_count INTEGER DEFAULT 0,
+            last_used TIMESTAMP
+        )
+    ''')
+    
+    conn.commit()
+    conn.close()
+
+# Initialize database on startup
+init_db()
+
+# ====================
+# AI FUNCTIONS
+# ====================
+
+def call_claude(message, history=[]):
+    """Call Claude 3.5 API"""
+    try:
+        messages = []
+        for h in history:
+            messages.append({"role": h["role"], "content": h["content"]})
+        messages.append({"role": "user", "content": message})
+        
+        response = claude_client.messages.create(
+            model="claude-3-5-sonnet-20241022",
+            max_tokens=2048,
+            messages=messages
+        )
+        return response.content[0].text
+    except Exception as e:
+        return f"Claude Error: {str(e)}"
+
+def call_gpt4(message, history=[]):
+    """Call GPT-4 API"""
+    try:
+        messages = []
+        for h in history:
+            messages.append({"role": h["role"], "content": h["content"]})
+        messages.append({"role": "user", "content": message})
+        
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=messages,
+            max_tokens=2048
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        return f"GPT-4 Error: {str(e)}"
+
+def call_gemini(message, history=[]):
+    """Call Gemini Pro API"""
+    try:
+        model = genai.GenerativeModel('gemini-pro')
+        
+        # Build conversation history
+        chat = model.start_chat(history=[])
+        for h in history:
+            if h["role"] == "user":
+                chat.send_message(h["content"])
+        
+        response = chat.send_message(message)
+        return response.text
+    except Exception as e:
+        return f"Gemini Error: {str(e)}"
+
+def call_groq(message, history=[]):
+    """Call Groq (Llama 3.3) API"""
+    try:
+        messages = []
+        for h in history:
+            messages.append({"role": h["role"], "content": h["content"]})
+        messages.append({"role": "user", "content": message})
+        
+        response = groq_client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=messages,
+            max_tokens=2048
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        return f"Groq Error: {str(e)}"
+
+# ====================
+# API ROUTES
+# ====================
+
+@app.route('/api/health', methods=['GET'])
+def health():
+    """Health check endpoint"""
+    return jsonify({
+        'status': 'ok',
+        'message': 'YusufAI Backend is running!',
+        'timestamp': datetime.now().isoformat()
+    })
+
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    """Main chat endpoint"""
+    try:
+        data = request.json
+        ai_type = data.get('ai', 'gpt4')
+        message = data.get('message', '')
+        history = data.get('history', [])
+        
+        if not message:
+            return jsonify({'error': 'Message is required'}), 400
+        
+        # Call appropriate AI
+        response_text = ""
+        if ai_type == 'claude':
+            response_text = call_claude(message, history)
+        elif ai_type == 'gpt4':
+            response_text = call_gpt4(message, history)
+        elif ai_type == 'gemini':
+            response_text = call_gemini(message, history)
+        elif ai_type == 'groq':
+            response_text = call_groq(message, history)
+        else:
+            return jsonify({'error': 'Invalid AI type'}), 400
+        
+        # Update stats
+        update_stats(ai_type)
+        
+        return jsonify({
+            'success': True,
+            'ai': ai_type,
+            'response': response_text,
+            'timestamp': datetime.now().isoformat()
+        })
+    
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/stats', methods=['GET'])
+def get_stats():
+    """Get usage statistics"""
+    try:
+        conn = sqlite3.connect('yusufai.db')
+        cursor = conn.cursor()
+        
+        cursor.execute('SELECT * FROM stats')
+        stats = cursor.fetchall()
+        
+        conn.close()
+        
+        return jsonify({
+            'success': True,
+            'stats': [
+                {
+                    'ai': s[1],
+                    'count': s[2],
+                    'last_used': s[3]
+                } for s in stats
+            ]
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/save-chat', methods=['POST'])
+def save_chat():
+    """Save chat to database"""
+    try:
+        data = request.json
+        user_id = data.get('user_id', 1)  # Default user
+        ai_type = data.get('ai')
+        title = data.get('title')
+        messages = data.get('messages', [])
+        
+        conn = sqlite3.connect('yusufai.db')
+        cursor = conn.cursor()
+        
+        # Create chat
+        cursor.execute(
+            'INSERT INTO chats (user_id, ai_type, title) VALUES (?, ?, ?)',
+            (user_id, ai_type, title)
+        )
+        chat_id = cursor.lastrowid
+        
+        # Save messages
+        for msg in messages:
+            cursor.execute(
+                'INSERT INTO messages (chat_id, role, content) VALUES (?, ?, ?)',
+                (chat_id, msg['role'], msg['content'])
+            )
+        
+        conn.commit()
+        conn.close()
+        
+        return jsonify({
+            'success': True,
+            'chat_id': chat_id
+        })
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/get-chats', methods=['GET'])
+def get_chats():
+    """Get all chats for a user"""
+    try:
+        user_id = request.args.get('user_id', 1)
+        
+        conn = sqlite3.connect('yusufai.db')
+        cursor = conn.cursor()
+        
+        cursor.execute(
+            'SELECT * FROM chats WHERE user_id = ? ORDER BY created_at DESC',
+            (user_id,)
+        )
+        chats = cursor.fetchall()
+        
+        conn.close()
+        
+        return jsonify({
+            'success': True,
+            'chats': [
+                {
+                    'id': c[0],
+                    'ai': c[2],
+                    'title': c[3],
+                    'created': c[4]
+                } for c in chats
+            ]
+        })
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# ====================
+# HELPER FUNCTIONS
+# ====================
+
+def update_stats(ai_type):
+    """Update usage statistics"""
+    try:
+        conn = sqlite3.connect('yusufai.db')
+        cursor = conn.cursor()
+        
+        cursor.execute(
+            'SELECT * FROM stats WHERE ai_type = ?',
+            (ai_type,)
+        )
+        existing = cursor.fetchone()
+        
+        if existing:
+            cursor.execute(
+                'UPDATE stats SET messages_count = messages_count + 1, last_used = ? WHERE ai_type = ?',
+                (datetime.now().isoformat(), ai_type)
+            )
+        else:
+            cursor.execute(
+                'INSERT INTO stats (ai_type, messages_count, last_used) VALUES (?, 1, ?)',
+                (ai_type, datetime.now().isoformat())
+            )
+        
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"Stats update error: {e}")
+
+# ====================
+# RUN SERVER
+# ====================
+
+if __name__ == '__main__':
+    print("🤖 YusufAI Backend Server Starting...")
+    print("📍 Running on: http://localhost:5000")
+    print("🔥 All 4 AI APIs ready!")
+    app.run(debug=True, host='0.0.0.0', port=5000)
