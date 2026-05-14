@@ -21,10 +21,10 @@ CORS(app)  # Allow frontend to connect
 # ====================
 
 # API Keys (Environment Variables - IMPORTANT!)
-CLAUDE_KEY = os.getenv('CLAUDE_API_KEY', 'sk-ant-api03-...')
-GPT_KEY = os.getenv('OPENAI_API_KEY', 'sk-proj-...')
-GEMINI_KEY = os.getenv('GEMINI_API_KEY', 'AIza...')
-GROQ_KEY = os.getenv('GROQ_API_KEY', 'gsk_...')
+CLAUDE_KEY = os.getenv(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)
+GPT_KEY = os.getenv(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)
+GEMINI_KEY = os.getenv(AIzaSyAlEG66c-IpjpinING_8HABwBt22pes3no)
+GROQ_KEY = os.getenv(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)
 
 # Initialize AI clients
 claude_client = anthropic.Anthropic(api_key=CLAUDE_KEY)
