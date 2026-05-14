@@ -1,622 +1,593 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YusufAI - Full Stack AI Platform</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <!-- jsPDF for PDF export -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    
-    <style>
-        :root {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f5f5f5;
-            --bg-sidebar: rgba(255, 255, 255, 0.98);
-            --text-primary: #333;
-            --text-secondary: #666;
-            --border-color: #e0e0e0;
-            --gradient-1: #667eea;
-            --gradient-2: #764ba2;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        .dark-mode {
-            --bg-primary: #1a1a2e;
-            --bg-secondary: #0f0f1e;
-            --bg-sidebar: rgba(26, 26, 46, 0.98);
-            --text-primary: #f8f9fa;
-            --text-secondary: #adb5bd;
-            --border-color: #2d2d44;
-        }
+<title>YusufAI - Multi AI Platform</title>
 
-        * {margin: 0; padding: 0; box-sizing: border-box;}
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
-            height: 100vh;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-        .container {display: flex; height: 100vh;}
-        .sidebar {
-            width: 280px;
-            background: var(--bg-sidebar);
-            padding: 20px;
-            box-shadow: 2px 0 20px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-        }
-        .logo {
-            font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .controls {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .control-btn {
-            flex: 1;
-            padding: 10px;
-            background: var(--bg-secondary);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 20px;
-            transition: all 0.3s;
-        }
-        .control-btn:hover {transform: scale(1.1);}
-        .new-chat {
-            padding: 15px;
-            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
-            color: white;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-bottom: 20px;
-            font-size: 15px;
-        }
-        .new-chat:hover {transform: scale(1.05);}
-        .ai-button {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 10px;
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            background: var(--bg-primary);
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-        .ai-button:hover {border-color: var(--gradient-1); transform: translateX(5px);}
-        .ai-button.active {
-            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
-            color: white;
-            border-color: transparent;
-        }
-        .ai-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-        .history {flex: 1; overflow-y: auto;}
-        .history-item {
-            padding: 12px;
-            margin-bottom: 8px;
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            color: var(--text-primary);
-        }
-        .history-item:hover {transform: translateX(5px);}
-        .history-item.active {background: var(--gradient-1); color: white;}
-        .main {flex: 1; display: flex; flex-direction: column; background: var(--bg-primary);}
-        .header {
-            padding: 20px 30px;
-            background: var(--bg-primary);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .ai-name {font-size: 20px; font-weight: 700; color: var(--gradient-1);}
-        .stats {font-size: 14px; color: var(--text-secondary); display: flex; gap: 20px;}
-        .connection-status {
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .connected {background: #10b981; color: white;}
-        .disconnected {background: #ef4444; color: white;}
-        .messages {flex: 1; padding: 30px; overflow-y: auto;}
-        .message {margin-bottom: 24px; display: flex; gap: 12px; animation: fadeIn 0.3s;}
-        @keyframes fadeIn {from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);}}
-        .message.user {justify-content: flex-end;}
-        .message-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-        .user .message-avatar {background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2)); color: white;}
-        .ai .message-avatar {background: var(--bg-secondary);}
-        .message-content {
-            max-width: 70%;
-            padding: 16px 20px;
-            border-radius: 16px;
-            line-height: 1.6;
-            font-size: 15px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            color: var(--text-primary);
-        }
-        .user .message-content {
-            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
-            color: white;
-            border-bottom-right-radius: 4px;
-        }
-        .ai .message-content {background: var(--bg-secondary); border-bottom-left-radius: 4px;}
-        .input-area {padding: 25px 30px; background: var(--bg-primary); border-top: 1px solid var(--border-color);}
-        .input-container {display: flex; gap: 12px; max-width: 900px; margin: 0 auto;}
-        .input-container input {
-            flex: 1;
-            padding: 16px 24px;
-            border: 2px solid var(--border-color);
-            border-radius: 30px;
-            font-size: 15px;
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-        }
-        .input-container input:focus {outline: none; border-color: var(--gradient-1);}
-        .send-btn, .voice-btn {
-            padding: 16px 32px;
-            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
-            color: white;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 15px;
-        }
-        .voice-btn {padding: 16px 20px; font-size: 20px;}
-        .send-btn:hover:not(:disabled), .voice-btn:hover:not(:disabled) {transform: scale(1.05);}
-        .send-btn:disabled, .voice-btn:disabled {opacity: 0.5; cursor: not-allowed;}
-        .typing {display: inline-flex; gap: 4px;}
-        .typing span {width: 8px; height: 8px; border-radius: 50%; background: var(--gradient-1); animation: bounce 1.4s infinite;}
-        .typing span:nth-child(2) {animation-delay: 0.2s;}
-        .typing span:nth-child(3) {animation-delay: 0.4s;}
-        @keyframes bounce {0%, 60%, 100% {transform: translateY(0);} 30% {transform: translateY(-10px);}}
-        .welcome {text-align: center; padding: 60px 20px; color: var(--text-secondary);}
-        .welcome h2 {font-size: 32px; margin-bottom: 16px; color: var(--text-primary);}
-        .welcome p {font-size: 16px; margin-bottom: 8px;}
-        .suggestions {display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 20px;}
-        .suggestion {
-            padding: 12px 16px;
-            background: var(--bg-primary);
-            border: 2px solid var(--border-color);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 14px;
-            color: var(--text-primary);
-        }
-        .suggestion:hover {border-color: var(--gradient-1); background: var(--bg-secondary); transform: translateY(-2px);}
-        .recording {
-            animation: pulse 1s infinite;
-            background: #ef4444 !important;
-        }
-        @keyframes pulse {
-            0%, 100% {opacity: 1;}
-            50% {opacity: 0.5;}
-        }
-    </style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --bg:#0f172a;
+    --sidebar:#111827;
+    --card:#1e293b;
+    --card2:#334155;
+    --text:#f8fafc;
+    --muted:#94a3b8;
+    --border:#334155;
+    --primary:#7c3aed;
+    --primary2:#9333ea;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:linear-gradient(135deg,#0f172a,#111827);
+    color:var(--text);
+    height:100vh;
+    overflow:hidden;
+}
+
+.container{
+    display:flex;
+    height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:300px;
+    background:rgba(15,23,42,.95);
+    border-right:1px solid var(--border);
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    backdrop-filter:blur(20px);
+}
+
+.logo{
+    font-size:32px;
+    font-weight:800;
+    text-align:center;
+    margin-bottom:20px;
+    background:linear-gradient(135deg,#8b5cf6,#ec4899);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.top-buttons{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.top-btn{
+    flex:1;
+    border:none;
+    background:var(--card);
+    color:white;
+    padding:12px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.top-btn:hover{
+    background:var(--card2);
+}
+
+.new-chat{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:14px;
+    margin-bottom:20px;
+    background:linear-gradient(135deg,#7c3aed,#9333ea);
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.new-chat:hover{
+    transform:scale(1.02);
+}
+
+.ai-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.ai-btn{
+    width:100%;
+    border:none;
+    background:var(--card);
+    color:white;
+    padding:14px;
+    border-radius:14px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:15px;
+    font-weight:600;
+    transition:.2s;
+}
+
+.ai-btn:hover{
+    background:var(--card2);
+}
+
+.ai-btn.active{
+    background:linear-gradient(135deg,#7c3aed,#9333ea);
+}
+
+.ai-icon{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+}
+
+/* MAIN */
+
+.main{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+.header{
+    height:80px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+    background:rgba(15,23,42,.7);
+    backdrop-filter:blur(20px);
+}
+
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.ai-name{
+    font-size:22px;
+    font-weight:700;
+}
+
+.status{
+    background:#10b981;
+    color:white;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.messages{
+    flex:1;
+    overflow-y:auto;
+    padding:30px;
+}
+
+.welcome{
+    text-align:center;
+    margin-top:100px;
+}
+
+.welcome h1{
+    font-size:50px;
+    margin-bottom:15px;
+}
+
+.welcome p{
+    color:var(--muted);
+    font-size:18px;
+}
+
+.message{
+    display:flex;
+    gap:12px;
+    margin-bottom:24px;
+}
+
+.message.user{
+    justify-content:flex-end;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    flex-shrink:0;
+}
+
+.user .avatar{
+    background:linear-gradient(135deg,#7c3aed,#9333ea);
+}
+
+.ai .avatar{
+    background:var(--card);
+}
+
+.bubble{
+    max-width:70%;
+    padding:18px;
+    border-radius:18px;
+    line-height:1.7;
+    white-space:pre-wrap;
+}
+
+.user .bubble{
+    background:linear-gradient(135deg,#7c3aed,#9333ea);
+}
+
+.ai .bubble{
+    background:var(--card);
+}
+
+.input-area{
+    padding:25px;
+    border-top:1px solid var(--border);
+    background:rgba(15,23,42,.7);
+}
+
+.input-box{
+    display:flex;
+    gap:12px;
+}
+
+.input-box input{
+    flex:1;
+    border:none;
+    background:var(--card);
+    color:white;
+    padding:18px 22px;
+    border-radius:40px;
+    font-size:15px;
+}
+
+.input-box input:focus{
+    outline:none;
+}
+
+.send-btn{
+    border:none;
+    padding:18px 28px;
+    border-radius:40px;
+    cursor:pointer;
+    font-weight:700;
+    color:white;
+    background:linear-gradient(135deg,#7c3aed,#9333ea);
+}
+
+.send-btn:hover{
+    transform:scale(1.04);
+}
+
+@media(max-width:800px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .bubble{
+        max-width:90%;
+    }
+
+}
+
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="sidebar">
-            <div class="logo">🤖 YusufAI</div>
-            
-            <div class="controls">
-                <button class="control-btn" onclick="toggleTheme()" title="Dark/Light Mode">🌙</button>
-                <button class="control-btn" onclick="exportPDF()" title="Export PDF">📄</button>
-                <button class="control-btn" onclick="showStats()" title="Statistics">📊</button>
-            </div>
-            
-            <button class="new-chat" onclick="newChat()">➕ Yangi Suhbat</button>
-            
-            <div class="ai-selector">
-                <button class="ai-button active" onclick="selectAI('gpt4')" data-ai="gpt4">
-                    <div class="ai-icon" style="background: #10a37f; color: white;">🤖</div>ChatGPT-4
-                </button>
-                <button class="ai-button" onclick="selectAI('claude')" data-ai="claude">
-                    <div class="ai-icon" style="background: #CC785C; color: white;">🎭</div>Claude 3.5
-                </button>
-                <button class="ai-button" onclick="selectAI('gemini')" data-ai="gemini">
-                    <div class="ai-icon" style="background: #4285F4; color: white;">💎</div>Gemini Pro
-                </button>
-                <button class="ai-button" onclick="selectAI('groq')" data-ai="groq">
-                    <div class="ai-icon" style="background: #F55036; color: white;">⚡</div>Groq (Llama)
-                </button>
-            </div>
-            
-            <div class="history" id="chatHistory"></div>
+
+<div class="container">
+
+    <div class="sidebar">
+
+        <div class="logo">🤖 YusufAI</div>
+
+        <div class="top-buttons">
+            <button class="top-btn" onclick="toggleTheme()">🌙</button>
+            <button class="top-btn" onclick="clearChat()">🗑️</button>
+            <button class="top-btn" onclick="showInfo()">📊</button>
         </div>
-        
-        <div class="main">
-            <div class="header">
-                <div class="ai-name" id="currentAI">ChatGPT-4</div>
-                <div class="stats">
-                    <div class="connection-status" id="status">🔌 Connecting...</div>
-                    <div>🌍 500+ Til</div>
-                </div>
-            </div>
-            
-            <div class="messages" id="messages">
-                <div class="welcome">
-                    <h2>YusufAI - Full Stack Platform</h2>
-                    <p>✨ 4 ta real AI | 🎤 Voice Input | 📄 PDF Export | 🌙 Dark Mode</p>
-                    <p>🚀 Muhammad Yusuf (13) tomonidan yaratilgan</p>
-                    <div class="suggestions">
-                        <div class="suggestion" onclick="askQuestion('Python dasturlash')">💻 Python</div>
-                        <div class="suggestion" onclick="askQuestion('O\'zbekiston tarixi')">🇺🇿 O'zbekiston</div>
-                        <div class="suggestion" onclick="askQuestion('Matematika masala')">🔢 Math</div>
-                        <div class="suggestion" onclick="askQuestion('She\'r yoz')">✍️ She'r</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="input-area">
-                <div class="input-container">
-                    <button class="voice-btn" id="voiceBtn" onclick="toggleVoice()" title="Voice Input">🎤</button>
-                    <input type="text" id="messageInput" placeholder="Savolingizni yozing yoki 🎤 bosing..." onkeypress="if(event.key==='Enter') sendMessage()">
-                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">Yuborish</button>
-                </div>
-            </div>
+
+        <button class="new-chat" onclick="newChat()">
+            ➕ Yangi suhbat
+        </button>
+
+        <div class="ai-list">
+
+            <button class="ai-btn active" data-ai="gpt4" onclick="selectAI('gpt4')">
+                <div class="ai-icon" style="background:#10a37f;">🤖</div>
+                ChatGPT-4
+            </button>
+
+            <button class="ai-btn" data-ai="claude" onclick="selectAI('claude')">
+                <div class="ai-icon" style="background:#CC785C;">🎭</div>
+                Claude 3.5
+            </button>
+
+            <button class="ai-btn" data-ai="gemini" onclick="selectAI('gemini')">
+                <div class="ai-icon" style="background:#4285F4;">💎</div>
+                Gemini Pro
+            </button>
+
+            <button class="ai-btn" data-ai="groq" onclick="selectAI('groq')">
+                <div class="ai-icon" style="background:#F55036;">⚡</div>
+                Groq Llama
+            </button>
+
         </div>
+
     </div>
 
-    <script>
-        // Configuration
-        const API_URL = 'http://localhost:5000';  // Backend URL
-        const USE_REAL_API = true;  // true = real API, false = demo mode
-        
-        const AI_NAMES = {
-            gpt4: 'ChatGPT-4',
-            claude: 'Claude 3.5',
-            gemini: 'Gemini Pro',
-            groq: 'Groq (Llama 3.3)'
-        };
+    <div class="main">
 
-        let currentAI = 'gpt4';
-        let currentChat = null;
-        let chats = JSON.parse(localStorage.getItem('yusufai_chats') || '[]');
-        let isRecording = false;
-        let recognition = null;
+        <div class="header">
 
-        // Check API connection
-        async function checkConnection() {
-            if (!USE_REAL_API) {
-                document.getElementById('status').className = 'connection-status disconnected';
-                document.getElementById('status').textContent = '📱 Demo Mode';
-                return;
-            }
-            
-            try {
-                const response = await fetch(`${API_URL}/api/health`);
-                if (response.ok) {
-                    document.getElementById('status').className = 'connection-status connected';
-                    document.getElementById('status').textContent = '🟢 Connected';
-                } else {
-                    throw new Error('API not responding');
-                }
-            } catch (error) {
-                document.getElementById('status').className = 'connection-status disconnected';
-                document.getElementById('status').textContent = '🔴 Offline';
-                console.error('API connection failed:', error);
-            }
+            <div class="header-left">
+                <div class="ai-name" id="aiName">ChatGPT-4</div>
+                <div class="status">🟢 Online</div>
+            </div>
+
+            <div>
+                🌍 500+ Til
+            </div>
+
+        </div>
+
+        <div class="messages" id="messages">
+
+            <div class="welcome">
+                <h1>YusufAI</h1>
+                <p>ChatGPT • Claude • Gemini • Groq</p>
+            </div>
+
+        </div>
+
+        <div class="input-area">
+
+            <div class="input-box">
+
+                <input
+                    type="text"
+                    id="input"
+                    placeholder="Savolingizni yozing..."
+                >
+
+                <button class="send-btn" onclick="sendMessage()">
+                    Yuborish
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const AI_NAMES = {
+    gpt4:'ChatGPT-4',
+    claude:'Claude 3.5',
+    gemini:'Gemini Pro',
+    groq:'Groq Llama'
+};
+
+let currentAI = 'gpt4';
+
+function selectAI(ai){
+
+    currentAI = ai;
+
+    document.querySelectorAll('.ai-btn')
+    .forEach(btn => btn.classList.remove('active'));
+
+    document.querySelector(`[data-ai="${ai}"]`)
+    .classList.add('active');
+
+    document.getElementById('aiName').innerText =
+    AI_NAMES[ai];
+}
+
+function sendMessage(){
+
+    const input = document.getElementById('input');
+
+    const text = input.value.trim();
+
+    if(!text) return;
+
+    addMessage('user',text);
+
+    input.value='';
+
+    setTimeout(()=>{
+
+        const reply = generateAI(text);
+
+        addMessage('ai',reply);
+
+    },700);
+}
+
+function addMessage(role,text){
+
+    const messages = document.getElementById('messages');
+
+    const div = document.createElement('div');
+
+    div.className = `message ${role}`;
+
+    const icon = role === 'user'
+        ? '👤'
+        : (
+            currentAI==='gpt4' ? '🤖' :
+            currentAI==='claude' ? '🎭' :
+            currentAI==='gemini' ? '💎' :
+            '⚡'
+        );
+
+    div.innerHTML = `
+        ${role==='ai'
+            ? `<div class="avatar">${icon}</div>`
+            : ''
         }
 
-        // Initialize
-        checkConnection();
-        setInterval(checkConnection, 30000);  // Check every 30s
+        <div class="bubble">${text}</div>
 
-        // AI Selection
-        function selectAI(ai) {
-            currentAI = ai;
-            document.querySelectorAll('.ai-button').forEach(b => b.classList.remove('active'));
-            document.querySelector('[data-ai="'+ai+'"]').classList.add('active');
-            document.getElementById('currentAI').textContent = AI_NAMES[ai];
+        ${role==='user'
+            ? `<div class="avatar">${icon}</div>`
+            : ''
         }
+    `;
 
-        // Chat Management
-        function newChat() {
-            currentChat = {
-                id: Date.now(),
-                ai: currentAI,
-                title: 'Yangi Suhbat',
-                messages: [],
-                created: new Date().toISOString()
-            };
-            chats.unshift(currentChat);
-            saveChats();
-            renderHistory();
-            renderMessages();
-        }
+    messages.appendChild(div);
 
-        function selectChat(id) {
-            currentChat = chats.find(c => c.id === id);
-            currentAI = currentChat.ai;
-            selectAI(currentAI);
-            renderHistory();
-            renderMessages();
-        }
+    messages.scrollTop = 999999;
+}
 
-        function saveChats() {
-            localStorage.setItem('yusufai_chats', JSON.stringify(chats));
-        }
+function generateAI(msg){
 
-        function renderHistory() {
-            document.getElementById('chatHistory').innerHTML = chats.map(c => 
-                `<div class="history-item ${c.id === currentChat?.id ? 'active' : ''}" onclick="selectChat(${c.id})">
-                    <div style="font-weight:600">${c.title}</div>
-                    <div style="font-size:12px;opacity:0.7">${AI_NAMES[c.ai]}</div>
-                </div>`
-            ).join('');
-        }
+    const text = msg.toLowerCase();
 
-        function renderMessages() {
-            if (!currentChat || !currentChat.messages.length) {
-                document.getElementById('messages').innerHTML = 
-                    `<div class="welcome"><h2>YusufAI</h2><p>✨ 4 ta real AI | 🎤 Voice | 📄 PDF | 🌙 Dark</p><p>🚀 Muhammad Yusuf (13)</p>
-                    <div class="suggestions">
-                        <div class="suggestion" onclick="askQuestion('Python')">💻 Python</div>
-                        <div class="suggestion" onclick="askQuestion('O\\'zbekiston')">🇺🇿 O'zbekiston</div>
-                        <div class="suggestion" onclick="askQuestion('Matematika')">🔢 Math</div>
-                        <div class="suggestion" onclick="askQuestion('She\\'r')">✍️ She'r</div>
-                    </div></div>`;
-                return;
-            }
-            const aiEmoji = {gpt4:'🤖',claude:'🎭',gemini:'💎',groq:'⚡'}[currentChat.ai];
-            document.getElementById('messages').innerHTML = currentChat.messages.map(m => 
-                `<div class="message ${m.role}">
-                    ${m.role === 'ai' ? `<div class="message-avatar">${aiEmoji}</div>` : ''}
-                    <div class="message-content">${m.content}</div>
-                    ${m.role === 'user' ? '<div class="message-avatar">👤</div>' : ''}
-                </div>`
-            ).join('');
-            document.getElementById('messages').scrollTop = 999999;
-        }
+    if(text.includes('salom')){
 
-        // Send Message
-        async function sendMessage() {
-            if (!currentChat) newChat();
-            
-            const input = document.getElementById('messageInput');
-            const msg = input.value.trim();
-            if (!msg) return;
+        return `Assalomu alaykum!
 
-            currentChat.messages.push({role: 'user', content: msg});
-            if (currentChat.messages.length === 2 || currentChat.title === 'Yangi Suhbat') {
-                currentChat.title = msg.substring(0, 40) + (msg.length > 40 ? '...' : '');
-            }
+Men ${AI_NAMES[currentAI]} modeliman.
+Sizga qanday yordam bera olaman?`;
+    }
 
-            input.value = '';
-            renderMessages();
-            renderHistory();
+    if(
+        text.includes('python') ||
+        text.includes('kod')
+    ){
 
-            const btn = document.getElementById('sendBtn');
-            btn.disabled = true;
+        return `Python dasturlash tili juda mashhur.
 
-            // Show typing
-            const typing = document.createElement('div');
-            typing.className = 'message ai';
-            const aiEmoji = {gpt4:'🤖',claude:'🎭',gemini:'💎',groq:'⚡'}[currentAI];
-            typing.innerHTML = `<div class="message-avatar">${aiEmoji}</div><div class="message-content"><div class="typing"><span></span><span></span><span></span></div></div>`;
-            document.getElementById('messages').appendChild(typing);
-            document.getElementById('messages').scrollTop = 999999;
+Misol:
 
-            // Call API or use demo
-            let aiResponse = '';
-            if (USE_REAL_API) {
-                aiResponse = await callRealAPI(msg);
-            } else {
-                await new Promise(r => setTimeout(r, 1000 + Math.random() * 1000));
-                aiResponse = getDemoResponse(msg);
-            }
+print("Hello World")
 
-            typing.remove();
-            currentChat.messages.push({role: 'ai', content: aiResponse});
-            saveChats();
-            renderMessages();
-            renderHistory();
-            btn.disabled = false;
-        }
+Python:
+• Web
+• AI
+• Bot
+• O'yin
+uchun ishlatiladi.`;
+    }
 
-        // Real API Call
-        async function callRealAPI(message) {
-            try {
-                const history = currentChat.messages.slice(0, -1).map(m => ({
-                    role: m.role === 'user' ? 'user' : 'assistant',
-                    content: m.content
-                }));
+    if(
+        text.includes('matematika') ||
+        text.includes('math')
+    ){
 
-                const response = await fetch(`${API_URL}/api/chat`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        ai: currentAI,
-                        message: message,
-                        history: history
-                    })
-                });
+        return `Matematika misoli:
 
-                const data = await response.json();
-                if (data.success) {
-                    return data.response;
-                } else {
-                    return `Error: ${data.error}`;
-                }
-            } catch (error) {
-                console.error('API Error:', error);
-                return `Connection error. Using demo mode.\n\n${getDemoResponse(message)}`;
-            }
-        }
+2x + 5 = 15
 
-        // Demo Response (fallback)
-        function getDemoResponse(msg) {
-            const m = msg.toLowerCase();
-            if (/salom|hello|hi/.test(m)) return `Assalomu alaykum! Men ${AI_NAMES[currentAI]}man. Sizga qanday yordam bera olaman?`;
-            if (/dastur|python/.test(m)) return "Python - ajoyib dasturlash tili! Oddiy syntaxi va kuchli kutubxonalari bor. Nimani o'rganmoqchisiz?";
-            if (/o'zbek/.test(m)) return "O'zbekiston - Markaziy Osiyoning marvaridi! 🇺🇿 Samarqand, Buxoro, Xiva kabi qadimiy shaharlar bor.";
-            return `${AI_NAMES[currentAI]} sifatida sizga yordam berishdan xursandman! Savolingizni batafsil yozing.`;
-        }
+2x = 10
+x = 5`;
+    }
 
-        // Voice Input
-        function toggleVoice() {
-            if (!('webkitSpeechRecognition' in window)) {
-                alert('Brauzeringiz ovozli kirishni qo\'llab-quvvatlamaydi!');
-                return;
-            }
+    if(
+        text.includes('o\'zbekiston')
+    ){
 
-            const voiceBtn = document.getElementById('voiceBtn');
-            
-            if (!isRecording) {
-                recognition = new webkitSpeechRecognition();
-                recognition.lang = 'uz-UZ';
-                recognition.continuous = false;
-                
-                recognition.onstart = () => {
-                    isRecording = true;
-                    voiceBtn.classList.add('recording');
-                    voiceBtn.textContent = '⏹️';
-                };
-                
-                recognition.onresult = (event) => {
-                    const text = event.results[0][0].transcript;
-                    document.getElementById('messageInput').value = text;
-                };
-                
-                recognition.onend = () => {
-                    isRecording = false;
-                    voiceBtn.classList.remove('recording');
-                    voiceBtn.textContent = '🎤';
-                };
-                
-                recognition.start();
-            } else {
-                recognition.stop();
-            }
-        }
+        return `🇺🇿 O‘zbekiston:
 
-        // Dark Mode
-        function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
-            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-        }
+Poytaxt: Toshkent
+Valyuta: So‘m
+Til: O‘zbek tili`;
+    }
 
-        // Load saved theme
-        if (localStorage.getItem('darkMode') === 'true') {
-            document.body.classList.add('dark-mode');
-        }
+    if(
+        text.includes('she')
+    ){
 
-        // Export to PDF
-        function exportPDF() {
-            if (!currentChat || !currentChat.messages.length) {
-                alert('Hech qanday suhbat yo\'q!');
-                return;
-            }
+        return `🌙
 
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            doc.setFontSize(16);
-            doc.text('YusufAI Chat Export', 20, 20);
-            doc.setFontSize(12);
-            doc.text(`AI: ${AI_NAMES[currentChat.ai]}`, 20, 30);
-            doc.text(`Date: ${new Date(currentChat.created).toLocaleDateString()}`, 20, 37);
-            
-            let y = 50;
-            currentChat.messages.forEach((msg, i) => {
-                if (y > 270) {
-                    doc.addPage();
-                    y = 20;
-                }
-                
-                doc.setFont(undefined, 'bold');
-                doc.text(msg.role === 'user' ? 'User:' : 'AI:', 20, y);
-                doc.setFont(undefined, 'normal');
-                
-                const lines = doc.splitTextToSize(msg.content, 170);
-                doc.text(lines, 20, y + 7);
-                y += (lines.length * 7) + 10;
-            });
-            
-            doc.save(`yusufai-chat-${Date.now()}.pdf`);
-        }
+Tun jim bo‘lib qolganida,
+Yulduzlar ham uxlaydi.
+Orzularing ortidan yur,
+Bir kun bari bo‘ladi.`;
+    }
 
-        // Statistics
-        async function showStats() {
-            if (USE_REAL_API) {
-                try {
-                    const response = await fetch(`${API_URL}/api/stats`);
-                    const data = await response.json();
-                    if (data.success) {
-                        alert('Statistics:\n\n' + data.stats.map(s => 
-                            `${s.ai}: ${s.count} messages`
-                        ).join('\n'));
-                        return;
-                    }
-                } catch (error) {
-                    console.error('Stats error:', error);
-                }
-            }
-            
-            // Demo stats
-            const stats = {};
-            chats.forEach(c => {
-                stats[c.ai] = (stats[c.ai] || 0) + c.messages.filter(m => m.role === 'ai').length;
-            });
-            
-            alert('Local Statistics:\n\n' + Object.entries(stats).map(([ai, count]) => 
-                `${AI_NAMES[ai]}: ${count} messages`
-            ).join('\n'));
-        }
+    return `${AI_NAMES[currentAI]} javobi:
 
-        function askQuestion(q) {
-            document.getElementById('messageInput').value = q;
-            sendMessage();
-        }
+"${msg}" haqida yordam bera olaman.`;
+}
 
-        // Initialize
-        renderHistory();
-        if (chats.length) {
-            currentChat = chats[0];
-            currentAI = currentChat.ai;
-            selectAI(currentAI);
-            renderMessages();
-        }
-    </script>
+document
+.getElementById('input')
+.addEventListener('keypress',e=>{
+
+    if(e.key==='Enter'){
+
+        sendMessage();
+    }
+});
+
+function toggleTheme(){
+
+    document.body.classList.toggle('light');
+}
+
+function clearChat(){
+
+    document.getElementById('messages').innerHTML=`
+        <div class="welcome">
+            <h1>YusufAI</h1>
+            <p>ChatGPT • Claude • Gemini • Groq</p>
+        </div>
+    `;
+}
+
+function newChat(){
+
+    clearChat();
+}
+
+function showInfo(){
+
+    alert(`
+YusufAI Platform
+
+• ChatGPT-4
+• Claude 3.5
+• Gemini Pro
+• Groq
+
+🚀 Muhammad Yusuf tomonidan yaratilgan
+    `);
+}
+
+</script>
+
 </body>
 </html>
